@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<!-- wp:query {"queryId":2,"query":{"perPage":12,"pages":0,"offset":0,"postType":"jetpack-portfolio","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"align":"wide","className":"foa-portfolio-query-grid","layout":{"type":"default"}} -->
+<!-- wp:query {"queryId":4,"query":{"perPage":12,"pages":0,"offset":0,"postType":"jetpack-portfolio","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"align":"wide","className":"foa-portfolio-query-grid","layout":{"type":"default"}} -->
 <div class="wp-block-query alignwide foa-portfolio-query-grid">
 	<!-- wp:post-template {"layout":{"type":"grid","columnCount":2}} -->
 		<!-- wp:post-featured-image {"isLink":true,"aspectRatio":"16/10"} /-->
