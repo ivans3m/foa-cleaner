@@ -194,4 +194,185 @@
 			event.preventDefault();
 		}
 	});
+
+	/* ----------------------------------------------------------------------
+	 * Create CV Page Modal, Upload, Publish & Delete Actions
+	 * ---------------------------------------------------------------------- */
+	var cvModal = document.getElementById('foa-cv-upload-modal');
+	var cvForm = document.querySelector('[data-foa-cv-upload-form]');
+	var cvModalMsg = document.querySelector('[data-foa-cv-modal-message]');
+	var cvPanelMsg = document.querySelector('[data-foa-cv-panel-message]');
+
+	function setCvMsg(el, text, isError) {
+		if (!el) {
+			return;
+		}
+		el.textContent = text || '';
+		el.classList.toggle('is-error', Boolean(isError));
+	}
+
+	if (cvModal) {
+		// Close when clicking the native <dialog> backdrop.
+		cvModal.addEventListener('click', function (event) {
+			if (event.target === cvModal) {
+				cvModal.close();
+			}
+		});
+	}
+
+	document.addEventListener('click', function (event) {
+		if (event.target.closest('[data-foa-cv-open-modal]') && cvModal) {
+			setCvMsg(cvModalMsg, '', false);
+			if (cvForm) {
+				cvForm.reset();
+			}
+			cvModal.showModal();
+			return;
+		}
+
+		if (event.target.closest('[data-foa-cv-close-modal]') && cvModal) {
+			cvModal.close();
+			return;
+		}
+
+		var publishBtn = event.target.closest('[data-foa-cv-publish]');
+		if (publishBtn) {
+			var pubId = publishBtn.getAttribute('data-page-id');
+			if (!pubId || !config.ajaxUrl || !config.cvNonce) {
+				return;
+			}
+			publishBtn.disabled = true;
+			publishBtn.textContent = labels.cvPublishing || 'Publishing…';
+			setCvMsg(cvPanelMsg, '', false);
+
+			var pubBody = new URLSearchParams();
+			pubBody.set('action', 'foa_cleaner_publish_cv_page');
+			pubBody.set('nonce', config.cvNonce);
+			pubBody.set('page_id', pubId);
+
+			fetch(config.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: pubBody.toString()
+			})
+				.then(function (res) { return res.json(); })
+				.then(function (json) {
+					if (json && json.success) {
+						var badge = document.querySelector('[data-foa-cv-status-badge]');
+						if (badge) {
+							badge.classList.remove('is-draft');
+							badge.classList.add('is-active');
+							badge.textContent = labels.cvPublished || 'Published';
+						}
+						var viewLink = document.querySelector('[data-foa-cv-view-link]');
+						if (viewLink && json.data && json.data.viewUrl) {
+							viewLink.setAttribute('href', json.data.viewUrl);
+							viewLink.textContent = labels.cvView || 'View';
+						}
+						publishBtn.remove();
+						return;
+					}
+					publishBtn.disabled = false;
+					publishBtn.textContent = labels.cvPublish || 'Publish';
+					setCvMsg(cvPanelMsg, (json && json.data && json.data.message) || labels.cvPublishError || 'Could not publish.', true);
+				})
+				.catch(function () {
+					publishBtn.disabled = false;
+					publishBtn.textContent = labels.cvPublish || 'Publish';
+					setCvMsg(cvPanelMsg, labels.cvPublishError || 'Could not publish.', true);
+				});
+			return;
+		}
+
+		var deleteBtn = event.target.closest('[data-foa-cv-delete]');
+		if (deleteBtn) {
+			var delId = deleteBtn.getAttribute('data-page-id');
+			if (!delId || !config.ajaxUrl || !config.cvNonce) {
+				return;
+			}
+			if (!window.confirm(labels.cvDeleteConfirm || 'Move this CV page to Trash?')) {
+				return;
+			}
+
+			deleteBtn.disabled = true;
+			deleteBtn.textContent = labels.cvDeleting || 'Moving to Trash…';
+			setCvMsg(cvPanelMsg, '', false);
+
+			var delBody = new URLSearchParams();
+			delBody.set('action', 'foa_cleaner_delete_cv_page');
+			delBody.set('nonce', config.cvNonce);
+			delBody.set('page_id', delId);
+
+			fetch(config.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: delBody.toString()
+			})
+				.then(function (res) { return res.json(); })
+				.then(function (json) {
+					if (json && json.success) {
+						window.location.reload();
+						return;
+					}
+					deleteBtn.disabled = false;
+					deleteBtn.textContent = labels.cvDelete || 'Delete';
+					setCvMsg(cvPanelMsg, (json && json.data && json.data.message) || labels.cvDeleteError || 'Could not delete.', true);
+				})
+				.catch(function () {
+					deleteBtn.disabled = false;
+					deleteBtn.textContent = labels.cvDelete || 'Delete';
+					setCvMsg(cvPanelMsg, labels.cvDeleteError || 'Could not delete.', true);
+				});
+		}
+	});
+
+	if (cvForm) {
+		cvForm.addEventListener('submit', function (event) {
+			event.preventDefault();
+			if (!config.ajaxUrl || !config.cvNonce) {
+				return;
+			}
+
+			var submitBtn = cvForm.querySelector('[data-foa-cv-submit]');
+			var formData = new FormData(cvForm);
+			formData.append('action', 'foa_cleaner_create_cv_page');
+			formData.append('nonce', config.cvNonce);
+
+			if (submitBtn) {
+				submitBtn.disabled = true;
+				submitBtn.textContent = labels.cvCreating || 'Creating Draft…';
+			}
+			setCvMsg(cvModalMsg, '', false);
+
+			fetch(config.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				body: formData
+			})
+				.then(function (res) { return res.json(); })
+				.then(function (json) {
+					if (json && json.success) {
+						if (cvModal) {
+							cvModal.close();
+						}
+						window.location.reload();
+						return;
+					}
+					if (submitBtn) {
+						submitBtn.disabled = false;
+						submitBtn.textContent = labels.cvCreateSubmit || 'Create Draft CV Page';
+					}
+					setCvMsg(cvModalMsg, (json && json.data && json.data.message) || labels.cvCreateError || 'Upload failed.', true);
+				})
+				.catch(function () {
+					if (submitBtn) {
+						submitBtn.disabled = false;
+						submitBtn.textContent = labels.cvCreateSubmit || 'Create Draft CV Page';
+					}
+					setCvMsg(cvModalMsg, labels.cvCreateError || 'Upload failed.', true);
+				});
+		});
+	}
 })();

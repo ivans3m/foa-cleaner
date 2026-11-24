@@ -574,6 +574,8 @@ function foa_cleaner_render_jetpack_markdown_field(): void {
 	} else {
 		echo '<p class="description">' . esc_html__( 'Mirrored with Jetpack Settings → Writing (Markdown module). Enables the Jetpack Markdown block for pasting structured CV Markdown directly in the Block Editor.', 'foa-cleaner' ) . '</p>';
 	}
+
+	foa_cleaner_render_cv_builder_panel();
 }
 
 /**
@@ -596,6 +598,7 @@ function foa_cleaner_render_options_page(): void {
 			submit_button();
 			?>
 		</form>
+		<?php foa_cleaner_render_cv_upload_modal(); ?>
 	</div>
 	<?php
 }

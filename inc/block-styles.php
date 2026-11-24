@@ -69,6 +69,10 @@ function foa_cleaner_register_block_styles(): void {
 				'name'  => 'hairline-top',
 				'label' => __( 'Hairline Top', 'foa-cleaner' ),
 			),
+			array(
+				'name'  => 'cv',
+				'label' => __( 'CV Document', 'foa-cleaner' ),
+			),
 		),
 		'core/columns'   => array(
 			array(

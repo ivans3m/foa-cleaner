@@ -41,6 +41,13 @@
 			"postTypes": [
 				"page"
 			]
+		},
+		{
+			"name": "page-cv",
+			"title": "CV / Resume",
+			"postTypes": [
+				"page"
+			]
 		}
 	],
 	"settings": {

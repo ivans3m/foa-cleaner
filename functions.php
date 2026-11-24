@@ -39,6 +39,8 @@ $foa_cleaner_includes = array(
 	'inc/block-styles.php',
 	'inc/pattern-categories.php',
 	'inc/reading-features.php',
+	'inc/cv.php',
+	'inc/cv-importer.php',
 );
 
 foreach ( $foa_cleaner_includes as $foa_cleaner_file ) {
@@ -69,6 +71,7 @@ function foa_cleaner_setup(): void {
 			'editor-style.css',
 			'assets/css/blocks.css',
 			'assets/css/patterns.css',
+			'assets/css/cv.css',
 		)
 	);
 }
