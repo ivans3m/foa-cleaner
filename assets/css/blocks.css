@@ -454,6 +454,10 @@ body.admin-bar .foa-site-header {
 	border-top: 1px solid var(--foa-border);
 }
 
+.foa-comments-section:not(:has(.wp-block-comments)) {
+	display: none;
+}
+
 .foa-comments-section .wp-block-comment-template {
 	padding-left: 0;
 	list-style: none;
