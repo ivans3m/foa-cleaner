@@ -206,6 +206,22 @@ function foa_cleaner_sanitize_options( $input ): array {
 }
 
 /**
+ * Schedule a one-time rewrite flush when Jetpack Portfolio support is first saved.
+ *
+ * WordPress fires `add_option_{$option}` rather than `update_option_{$option}`
+ * when the option row does not yet exist in the database.
+ *
+ * @since 1.1.0
+ *
+ * @param string $option Option name.
+ * @param mixed  $value  Newly added option value.
+ */
+function foa_cleaner_maybe_flush_portfolio_rewrites_on_add( string $option, $value ): void {
+	foa_cleaner_maybe_flush_portfolio_rewrites( array(), $value );
+}
+add_action( 'add_option_' . FOA_CLEANER_OPTION_KEY, 'foa_cleaner_maybe_flush_portfolio_rewrites_on_add', 10, 2 );
+
+/**
  * Schedule a one-time rewrite flush when Jetpack Portfolio support is toggled.
  *
  * @since 1.1.0

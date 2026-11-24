@@ -316,4 +316,8 @@
 	.foa-hero-display-title {
 		letter-spacing: -0.035em;
 	}
+
+	.foa-portfolio-index-row .has-text-align-right {
+		text-align: left;
+	}
 }
