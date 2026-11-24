@@ -48,6 +48,10 @@ Go to Appearance > FoA Cleaner and uncheck "Enable subtle scroll-reveal and inte
 
 Go to Appearance > FoA Cleaner. From the Recommended Companion Plugins panel (or the inline Install/Activate Jetpack link beside each option), install and activate Jetpack, then toggle "Jetpack Portfolio" (mirrors Jetpack's `jetpack_portfolio` setting and restores Portfolio Projects in block themes) and/or "Jetpack Markdown (for CV)" (mirrors Jetpack's Markdown module for CV and documentation pages). Without Jetpack, both toggles stay disabled and you can build portfolios natively using Pages, the "Case Study" page template, and FoA Cleaner's portfolio patterns.
 
+= How do I create a CV page from Markdown? =
+
+Enable Jetpack and turn on "Jetpack Markdown (for CV)" under Appearance > FoA Cleaner. The inline "Create CV Page" panel unlocks right beneath the toggle: upload a UTF-8 `cv-md/1.1` Markdown file (and an optional companion PDF), and FoA Cleaner generates a Draft `/cv/` page with the CV / Resume template, populated CV Header, and Jetpack Markdown body. If no PDF is uploaded, the header button automatically becomes "Download CV.MD" linking to a sanitized copy of your Markdown file (with trailing `## Facts` notes stripped). Once created, the panel switches to "Edit CV Page" with Publish, Preview/View, Edit, and Delete (Move to Trash) controls.
+
 = Does FoA Cleaner load fonts from Google Fonts? =
 
 No. Geist, DM Sans, and Geist Mono are self-hosted directly inside `assets/fonts/webfonts/` under the SIL Open Font License 1.1.
