@@ -27,6 +27,13 @@
 			"postTypes": [
 				"page"
 			]
+		},
+		{
+			"name": "page-case-study",
+			"title": "Case Study",
+			"postTypes": [
+				"page"
+			]
 		}
 	],
 	"settings": {

@@ -21,12 +21,13 @@ define( 'FOA_CLEANER_OPTION_KEY', 'foa_cleaner_options' );
  *
  * @since 0.1.0
  *
- * @return array{default_color_mode: string, enable_motion: bool}
+ * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool}
  */
 function foa_cleaner_option_defaults(): array {
 	return array(
-		'default_color_mode' => 'light',
-		'enable_motion'      => true,
+		'default_color_mode'       => 'light',
+		'enable_motion'            => true,
+		'enable_jetpack_portfolio' => false,
 	);
 }
 
@@ -35,7 +36,7 @@ function foa_cleaner_option_defaults(): array {
  *
  * @since 0.1.0
  *
- * @return array{default_color_mode: string, enable_motion: bool}
+ * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool}
  */
 function foa_cleaner_get_options(): array {
 	$defaults = foa_cleaner_option_defaults();
@@ -156,12 +157,36 @@ function foa_cleaner_is_motion_enabled(): bool {
 }
 
 /**
+ * Check whether optional Jetpack Portfolio theme support is enabled.
+ *
+ * Jetpack v14.4+ hides Custom Content Types in block themes unless the theme
+ * declares `jetpack-portfolio` support or the option was already enabled.
+ *
+ * @since 1.1.0
+ *
+ * @return bool True when Jetpack Portfolio theme support should be declared.
+ */
+function foa_cleaner_is_jetpack_portfolio_enabled(): bool {
+	$options = foa_cleaner_get_options();
+	$enabled = ! empty( $options['enable_jetpack_portfolio'] );
+
+	/**
+	 * Filter whether FoA Cleaner declares theme support for Jetpack Portfolios.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param bool $enabled True to call `add_theme_support( 'jetpack-portfolio' )`.
+	 */
+	return (bool) apply_filters( 'foa_cleaner_enable_jetpack_portfolio', $enabled );
+}
+
+/**
  * Sanitize theme options before saving to the database.
  *
  * @since 0.1.0
  *
  * @param mixed $input Raw submitted form values.
- * @return array{default_color_mode: string, enable_motion: bool} Sanitized option array.
+ * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool} Sanitized option array.
  */
 function foa_cleaner_sanitize_options( $input ): array {
 	$defaults = foa_cleaner_option_defaults();
@@ -174,10 +199,42 @@ function foa_cleaner_sanitize_options( $input ): array {
 	$mode          = isset( $input['default_color_mode'] ) ? sanitize_key( (string) $input['default_color_mode'] ) : $defaults['default_color_mode'];
 
 	return array(
-		'default_color_mode' => in_array( $mode, $allowed_modes, true ) ? $mode : $defaults['default_color_mode'],
-		'enable_motion'      => ! empty( $input['enable_motion'] ),
+		'default_color_mode'       => in_array( $mode, $allowed_modes, true ) ? $mode : $defaults['default_color_mode'],
+		'enable_motion'            => ! empty( $input['enable_motion'] ),
+		'enable_jetpack_portfolio' => ! empty( $input['enable_jetpack_portfolio'] ),
 	);
 }
+
+/**
+ * Schedule a one-time rewrite flush when Jetpack Portfolio support is toggled.
+ *
+ * @since 1.1.0
+ *
+ * @param mixed $old_value Previous option value.
+ * @param mixed $new_value Updated option value.
+ */
+function foa_cleaner_maybe_flush_portfolio_rewrites( $old_value, $new_value ): void {
+	$was_enabled = is_array( $old_value ) && ! empty( $old_value['enable_jetpack_portfolio'] );
+	$is_enabled  = is_array( $new_value ) && ! empty( $new_value['enable_jetpack_portfolio'] );
+
+	if ( $was_enabled !== $is_enabled ) {
+		set_transient( 'foa_cleaner_flush_rewrites', 1, MINUTE_IN_SECONDS );
+	}
+}
+add_action( 'update_option_' . FOA_CLEANER_OPTION_KEY, 'foa_cleaner_maybe_flush_portfolio_rewrites', 10, 2 );
+
+/**
+ * Flush rewrite rules once after the Jetpack Portfolio toggle changes.
+ *
+ * @since 1.1.0
+ */
+function foa_cleaner_handle_deferred_rewrite_flush(): void {
+	if ( get_transient( 'foa_cleaner_flush_rewrites' ) ) {
+		delete_transient( 'foa_cleaner_flush_rewrites' );
+		flush_rewrite_rules( false );
+	}
+}
+add_action( 'init', 'foa_cleaner_handle_deferred_rewrite_flush', 99 );
 
 /**
  * Register the FoA Cleaner settings, section, and fields.
@@ -218,6 +275,22 @@ function foa_cleaner_register_settings(): void {
 		'foa-cleaner-options',
 		'foa_cleaner_general_section',
 		array( 'label_for' => 'foa-cleaner-enable-motion' )
+	);
+
+	add_settings_section(
+		'foa_cleaner_integrations_section',
+		__( 'Optional Integrations', 'foa-cleaner' ),
+		'foa_cleaner_render_integrations_section_intro',
+		'foa-cleaner-options'
+	);
+
+	add_settings_field(
+		'foa_cleaner_enable_jetpack_portfolio',
+		__( 'Jetpack Portfolio', 'foa-cleaner' ),
+		'foa_cleaner_render_jetpack_portfolio_field',
+		'foa-cleaner-options',
+		'foa_cleaner_integrations_section',
+		array( 'label_for' => 'foa-cleaner-enable-jetpack-portfolio' )
 	);
 }
 add_action( 'admin_init', 'foa_cleaner_register_settings' );
@@ -294,6 +367,39 @@ function foa_cleaner_render_motion_field(): void {
 		esc_html__( 'Enable subtle scroll-reveal and interaction micro-animations', 'foa-cleaner' )
 	);
 	echo '<p class="description">' . esc_html__( 'Always disabled automatically for visitors who prefer reduced motion in their OS settings.', 'foa-cleaner' ) . '</p>';
+}
+
+/**
+ * Render the Optional Integrations section description.
+ *
+ * @since 1.1.0
+ */
+function foa_cleaner_render_integrations_section_intro(): void {
+	echo '<p>' . esc_html__( 'FoA Cleaner has zero required plugins. Enable optional integrations below only if you use them on your site.', 'foa-cleaner' ) . '</p>';
+}
+
+/**
+ * Render the Jetpack Portfolio checkbox control.
+ *
+ * @since 1.1.0
+ */
+function foa_cleaner_render_jetpack_portfolio_field(): void {
+	$options        = foa_cleaner_get_options();
+	$checked        = ! empty( $options['enable_jetpack_portfolio'] );
+	$jetpack_active = defined( 'JETPACK__VERSION' ) || class_exists( 'Automattic\Jetpack\Classic_Theme_Helper\Jetpack_Portfolio' );
+
+	printf(
+		'<label for="foa-cleaner-enable-jetpack-portfolio"><input type="checkbox" id="foa-cleaner-enable-jetpack-portfolio" name="%1$s[enable_jetpack_portfolio]" value="1"%2$s /> %3$s</label>',
+		esc_attr( FOA_CLEANER_OPTION_KEY ),
+		checked( $checked, true, false ),
+		esc_html__( 'Enable Jetpack Portfolio theme support (jetpack-portfolio custom post type)', 'foa-cleaner' )
+	);
+
+	if ( $jetpack_active ) {
+		echo '<p class="description">' . esc_html__( 'Jetpack is active. Enabling this restores Portfolio Projects in block themes and activates FoA Cleaner portfolio archive and single project templates.', 'foa-cleaner' ) . '</p>';
+	} else {
+		echo '<p class="description">' . esc_html__( 'Jetpack is not currently active. This setting has no effect without Jetpack; you can also build portfolios natively using Pages and FoA Cleaner portfolio patterns.', 'foa-cleaner' ) . '</p>';
+	}
 }
 
 /**

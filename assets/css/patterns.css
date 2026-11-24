@@ -146,6 +146,99 @@
 	color: var(--foa-text-muted);
 }
 
+/* Dynamic Portfolio Query Grid (Jetpack Portfolio & Native Pages/Posts) */
+.foa-portfolio-query-grid .wp-block-post-template {
+	gap: var(--wp--preset--spacing--2-xl) var(--wp--preset--spacing--xl);
+}
+
+.foa-portfolio-query-grid .wp-block-post {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--sm);
+}
+
+.foa-portfolio-query-grid .wp-block-post-featured-image {
+	margin: 0;
+	overflow: hidden;
+	border-radius: var(--foa-radius-card);
+	border: 1px solid var(--foa-border);
+	background-color: var(--foa-surface);
+	aspect-ratio: 16 / 10;
+}
+
+.foa-portfolio-query-grid .wp-block-post-featured-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.35s ease;
+}
+
+.foa-portfolio-query-grid .wp-block-post:hover .wp-block-post-featured-image img {
+	transform: scale(1.02);
+}
+
+.foa-portfolio-meta {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.04em;
+	color: var(--foa-text-muted);
+}
+
+.foa-portfolio-meta a {
+	color: var(--foa-text-muted);
+	text-decoration: none;
+}
+
+.foa-portfolio-meta a:hover {
+	color: var(--foa-accent);
+}
+
+.foa-portfolio-query-grid .wp-block-post-title a {
+	color: var(--foa-text);
+	text-decoration: none;
+}
+
+.foa-portfolio-query-grid .wp-block-post-title a:hover {
+	color: var(--foa-accent);
+}
+
+/* Minimal Portfolio Index List */
+.foa-portfolio-index-row {
+	border-top: 1px solid var(--foa-border);
+	padding-block: var(--wp--preset--spacing--md);
+	transition: border-color var(--foa-transition), padding-inline-start var(--foa-transition);
+}
+
+.foa-portfolio-index-row:last-child {
+	border-bottom: 1px solid var(--foa-border);
+}
+
+.foa-portfolio-index-row:hover {
+	border-top-color: var(--foa-border-strong);
+}
+
+.foa-portfolio-index-row a {
+	color: var(--foa-text);
+	text-decoration: none;
+}
+
+.foa-portfolio-index-row a:hover {
+	color: var(--foa-accent);
+}
+
+/* Single Portfolio / Case Study Layout */
+.foa-case-study-header {
+	padding-bottom: var(--wp--preset--spacing--lg);
+	border-bottom: 1px solid var(--foa-border);
+}
+
+.foa-case-study-meta-grid {
+	border-top: 1px solid var(--foa-border);
+	border-bottom: 1px solid var(--foa-border);
+	padding-block: var(--wp--preset--spacing--md);
+}
+
 /* --------------------------------------------------------------------------
  * 6. Pricing Table
  * -------------------------------------------------------------------------- */

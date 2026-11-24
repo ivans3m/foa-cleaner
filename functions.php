@@ -59,6 +59,10 @@ function foa_cleaner_setup(): void {
 		array( 'aside', 'quote', 'link', 'status' )
 	);
 
+	if ( foa_cleaner_is_jetpack_portfolio_enabled() ) {
+		add_theme_support( 'jetpack-portfolio' );
+	}
+
 	add_editor_style(
 		array(
 			'editor-style.css',
