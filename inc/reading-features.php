@@ -4,7 +4,7 @@
  *
  * Provides conditional asset loading for single-post Focus Mode, reading
  * progress bar, and copy-code buttons (populated in Phase 3), plus helper
- * utilities for reading time and yearly post archives.
+ * utilities for reading time, yearly post archives, and post format classes.
  *
  * @package FoA_Cleaner
  * @since   0.1.0
@@ -90,12 +90,18 @@ add_action( 'wp_enqueue_scripts', 'foa_cleaner_enqueue_reading_assets' );
 /**
  * Estimate reading time in minutes for a given post.
  *
+ * Uses Unicode-aware splitting so non-ASCII languages calculate accurately.
+ *
  * @since 0.1.0
  *
  * @param int|null $post_id Optional post ID. Defaults to current post.
  * @return int Estimated reading time in minutes (minimum 1).
  */
 function foa_cleaner_reading_time( ?int $post_id = null ): int {
+	if ( null === $post_id && is_singular() ) {
+		$post_id = get_queried_object_id();
+	}
+
 	$post = get_post( $post_id );
 	if ( ! $post instanceof WP_Post ) {
 		return 1;
@@ -109,16 +115,157 @@ function foa_cleaner_reading_time( ?int $post_id = null ): int {
 }
 
 /**
+ * Render the chronological Yearly Archive HTML grouped by publication year.
+ *
+ * @since 0.1.0
+ *
+ * @return string Archive HTML markup.
+ */
+function foa_cleaner_render_yearly_archive(): string {
+	$max_posts = (int) apply_filters( 'foa_cleaner_yearly_archive_limit', 500 );
+
+	$query = new WP_Query(
+		array(
+			'post_type'              => 'post',
+			'post_status'            => 'publish',
+			'posts_per_page'         => max( 1, min( 2000, $max_posts ) ),
+			'orderby'                => 'date',
+			'order'                  => 'DESC',
+			'ignore_sticky_posts'    => true,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		)
+	);
+
+	if ( ! $query->have_posts() ) {
+		return '<p class="foa-yearly-archive-empty">' . esc_html__( 'No posts published yet.', 'foa-cleaner' ) . '</p>';
+	}
+
+	$grouped = array();
+	foreach ( $query->posts as $archive_post ) {
+		$year = get_the_date( 'Y', $archive_post );
+		if ( ! isset( $grouped[ $year ] ) ) {
+			$grouped[ $year ] = array();
+		}
+		$grouped[ $year ][] = $archive_post;
+	}
+
+	$output = '<div class="foa-yearly-archive">';
+
+	foreach ( $grouped as $year => $posts ) {
+		$count       = count( $posts );
+		$count_label = sprintf(
+			/* translators: %s: number of posts in a given year. */
+			_n( '%s post', '%s posts', $count, 'foa-cleaner' ),
+			number_format_i18n( $count )
+		);
+
+		$output .= '<section class="foa-archive-year-group" aria-labelledby="foa-year-' . esc_attr( $year ) . '">';
+		$output .= '<div class="foa-archive-year-heading">';
+		$output .= '<h2 id="foa-year-' . esc_attr( $year ) . '" class="foa-archive-year-title">' . esc_html( $year ) . '</h2>';
+		$output .= '<span class="foa-archive-year-count">' . esc_html( $count_label ) . '</span>';
+		$output .= '</div>';
+		$output .= '<ol class="foa-archive-year-list">';
+
+		$item_date_format = _x( 'M j', 'yearly archive item date format', 'foa-cleaner' );
+
+		foreach ( $posts as $archive_post ) {
+			$title = get_the_title( $archive_post );
+			if ( '' === trim( $title ) ) {
+				$title = __( '(Untitled)', 'foa-cleaner' );
+			}
+
+			$output .= '<li class="foa-archive-year-item">';
+			$output .= '<time class="foa-archive-item-date" datetime="' . esc_attr( get_the_date( DATE_W3C, $archive_post ) ) . '">' . esc_html( get_the_date( $item_date_format, $archive_post ) ) . '</time>';
+			$output .= '<a class="foa-archive-item-link" href="' . esc_url( get_permalink( $archive_post ) ) . '">' . esc_html( $title ) . '</a>';
+			$output .= '</li>';
+		}
+
+		$output .= '</ol>';
+		$output .= '</section>';
+	}
+
+	$output .= '</div>';
+
+	return $output;
+}
+
+/**
+ * Populate reading-time and yearly-archive slots inside rendered block HTML.
+ *
+ * @since 0.1.0
+ *
+ * @param string $block_content Rendered block HTML.
+ * @return string Filtered block HTML.
+ */
+function foa_cleaner_render_reading_slots( string $block_content ): string {
+	if ( false !== strpos( $block_content, 'data-foa-reading-time' ) ) {
+		$block_content = (string) preg_replace_callback(
+			'/<span\s+data-foa-reading-time(?:="")?\s*><\/span>/',
+			static function (): string {
+				$minutes = foa_cleaner_reading_time();
+				$label   = sprintf(
+					/* translators: %d: estimated reading time in minutes. */
+					_n( '%d min read', '%d min read', $minutes, 'foa-cleaner' ),
+					$minutes
+				);
+				return '<span class="foa-reading-time">' . esc_html( $label ) . '</span>';
+			},
+			$block_content
+		);
+	}
+
+	if ( false !== strpos( $block_content, 'foa-yearly-archive-slot' ) ) {
+		$block_content = (string) preg_replace_callback(
+			'/<div\s+class="foa-yearly-archive-slot"\s*><\/div>/',
+			static function (): string {
+				return foa_cleaner_render_yearly_archive();
+			},
+			$block_content
+		);
+	}
+
+	return $block_content;
+}
+add_filter( 'render_block', 'foa_cleaner_render_reading_slots', 8 );
+
+/**
+ * Add an accessible aria-label to the single-post navigation <nav> landmark
+ * on frontend render without affecting Site Editor block serialization.
+ *
+ * @since 0.1.0
+ *
+ * @param string $block_content Rendered block HTML.
+ * @return string Filtered block HTML.
+ */
+function foa_cleaner_post_nav_aria_label( string $block_content ): string {
+	if ( false === strpos( $block_content, 'foa-post-nav' ) || false !== strpos( $block_content, 'aria-label=' ) ) {
+		return $block_content;
+	}
+
+	return (string) preg_replace(
+		'/<nav\b/',
+		'<nav aria-label="' . esc_attr__( 'Post navigation', 'foa-cleaner' ) . '"',
+		$block_content,
+		1
+	);
+}
+add_filter( 'render_block_core/group', 'foa_cleaner_post_nav_aria_label', 10 );
+
+/**
  * Add an explicit post-format semantic class for archive/stream styling.
  *
  * @since 0.1.0
  *
- * @param string[] $classes Existing post classes.
+ * @param string[] $classes   Existing post classes.
  * @param string[] $css_class Additional classes passed to post_class().
- * @param int      $post_id Post ID.
+ * @param int      $post_id   Post ID.
  * @return string[] Modified post classes.
  */
 function foa_cleaner_post_format_classes( array $classes, array $css_class, int $post_id ): array {
+	unset( $css_class );
+
 	if ( 'post' !== get_post_type( $post_id ) ) {
 		return $classes;
 	}

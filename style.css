@@ -86,8 +86,7 @@ Primary Branch: main
 	color: var(--foa-text-invert);
 }
 
-:root[data-foa-theme="dark"]:not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) .wp-element-button:hover,
-:root[data-foa-theme="dark"]:not([data-theme]):not([data-chosen]):not([data-colours]) .wp-block-button__link:hover {
+:root[data-foa-theme="dark"]:not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) .wp-block-button:not(.is-style-accent):not(.is-style-ghost):not(.is-style-outline) .wp-block-button__link:hover {
 	background-color: var(--foa-btn-primary-hover);
 	color: #0F0E0C;
 }

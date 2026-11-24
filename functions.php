@@ -59,7 +59,12 @@ function foa_cleaner_setup(): void {
 		array( 'aside', 'quote', 'link', 'status' )
 	);
 
-	add_editor_style( 'editor-style.css' );
+	add_editor_style(
+		array(
+			'editor-style.css',
+			'assets/css/blocks.css',
+		)
+	);
 }
 add_action( 'after_setup_theme', 'foa_cleaner_setup' );
 

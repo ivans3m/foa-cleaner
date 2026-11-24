@@ -14,7 +14,7 @@
 	const root = document.documentElement;
 
 	// Yield gracefully if Vibetiles is controlling the color mode.
-	if ( root.hasAttribute( 'data-theme' ) || document.body.classList.contains( 'foa-vibetiles-active' ) ) {
+	if ( root.hasAttribute( 'data-theme' ) || ( document.body && document.body.classList.contains( 'foa-vibetiles-active' ) ) ) {
 		return;
 	}
 

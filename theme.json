@@ -135,17 +135,17 @@
 					"size": "3rem"
 				},
 				{
-					"slug": "2xl",
+					"slug": "2-xl",
 					"name": "2XL (64px)",
 					"size": "clamp(3rem, 5vw, 4rem)"
 				},
 				{
-					"slug": "3xl",
+					"slug": "3-xl",
 					"name": "3XL (96px)",
 					"size": "clamp(4rem, 7vw, 6rem)"
 				},
 				{
-					"slug": "4xl",
+					"slug": "4-xl",
 					"name": "4XL (128px)",
 					"size": "clamp(4.5rem, 9vw, 8rem)"
 				}
@@ -264,7 +264,7 @@
 					}
 				},
 				{
-					"slug": "2xl",
+					"slug": "2-xl",
 					"name": "2XL",
 					"size": "2.75rem",
 					"fluid": {
@@ -273,7 +273,7 @@
 					}
 				},
 				{
-					"slug": "3xl",
+					"slug": "3-xl",
 					"name": "3XL",
 					"size": "4.5rem",
 					"fluid": {
@@ -374,7 +374,7 @@
 			},
 			"h1": {
 				"typography": {
-					"fontSize": "var:preset|font-size|3xl",
+					"fontSize": "var:preset|font-size|3-xl",
 					"fontWeight": "600",
 					"lineHeight": "1.05",
 					"letterSpacing": "-0.035em"
@@ -382,7 +382,7 @@
 			},
 			"h2": {
 				"typography": {
-					"fontSize": "var:preset|font-size|2xl",
+					"fontSize": "var:preset|font-size|2-xl",
 					"fontWeight": "600",
 					"lineHeight": "1.15",
 					"letterSpacing": "-0.025em"
@@ -647,7 +647,7 @@
 				},
 				"typography": {
 					"fontFamily": "var:preset|font-family|display",
-					"fontSize": "var:preset|font-size|2xl",
+					"fontSize": "var:preset|font-size|2-xl",
 					"fontWeight": "600",
 					"letterSpacing": "-0.025em",
 					"lineHeight": "1.2"
@@ -724,12 +724,6 @@
 				}
 			},
 			"core/search": {
-				"border": {
-					"color": "var:preset|color|border",
-					"radius": "8px",
-					"style": "solid",
-					"width": "1px"
-				},
 				"typography": {
 					"fontSize": "var:preset|font-size|sm"
 				}
