@@ -1,0 +1,1051 @@
+# Copyright (C) 2026 Ivan Diuldia
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: FoA Cleaner 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/ivans3m/foa-cleaner/issues\n"
+"POT-Creation-Date: 2026-11-24 12:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: foa-cleaner\n"
+
+#: functions.php:165
+msgid "Switch to dark mode"
+msgstr ""
+
+#: functions.php:166
+msgid "Switch to light mode"
+msgstr ""
+
+#: inc/block-styles.php:30
+msgid "FoA Blue"
+msgstr ""
+
+#: inc/block-styles.php:34
+msgid "Ghost"
+msgstr ""
+
+#: inc/block-styles.php:38
+msgid "Light (On Dark)"
+msgstr ""
+
+#: inc/block-styles.php:44
+msgid "Overline"
+msgstr ""
+
+#: inc/block-styles.php:48
+msgid "Pill Badge"
+msgstr ""
+
+#: inc/block-styles.php:52
+msgid "Lead Text"
+msgstr ""
+
+#: inc/block-styles.php:58
+msgid "Clean Card"
+msgstr ""
+
+#: inc/block-styles.php:62
+msgid "Elevated Card"
+msgstr ""
+
+#: inc/block-styles.php:66
+msgid "Dark Band"
+msgstr ""
+
+#: inc/block-styles.php:70
+msgid "Hairline Top"
+msgstr ""
+
+#: inc/block-styles.php:76
+msgid "Hairline Grid"
+msgstr ""
+
+#: inc/block-styles.php:82
+msgid "Checklist"
+msgstr ""
+
+#: inc/block-styles.php:88
+msgid "Clean Accordion"
+msgstr ""
+
+#: inc/block-styles.php:94
+msgid "Comparison Table"
+msgstr ""
+
+#: inc/icons.php:138
+msgid "Switch color mode"
+msgstr ""
+
+#: inc/options.php:200
+msgid "Appearance & Experience"
+msgstr ""
+
+#: inc/options.php:207
+msgid "Default Color Mode"
+msgstr ""
+
+#: inc/options.php:216
+msgid "Micro-Animations"
+msgstr ""
+
+#: inc/options.php:232
+#: inc/options.php:310
+msgid "FoA Cleaner Settings"
+msgstr ""
+
+#: inc/options.php:233
+#: patterns/comparison-table.php:37
+msgid "FoA Cleaner"
+msgstr ""
+
+#: inc/options.php:247
+msgid "Configure standalone appearance defaults and motion preferences. Typography, colors, and layouts are managed directly in the Site Editor."
+msgstr ""
+
+#: inc/options.php:258
+msgid "Light (Clean Design default)"
+msgstr ""
+
+#: inc/options.php:259
+msgid "System (follow visitor OS preference)"
+msgstr ""
+
+#: inc/options.php:260
+msgid "Dark"
+msgstr ""
+
+#: inc/options.php:275
+msgid "Vibetiles is currently active and manages live light/dark switching on the frontend."
+msgstr ""
+
+#: inc/options.php:277
+msgid "Applies to first-time visitors before they use the header light/dark switcher."
+msgstr ""
+
+#: inc/options.php:294
+msgid "Enable subtle scroll-reveal and interaction micro-animations"
+msgstr ""
+
+#: inc/options.php:296
+msgid "Always disabled automatically for visitors who prefer reduced motion in their OS settings."
+msgstr ""
+
+#: inc/pattern-categories.php:25
+msgid "FoA Cleaner: Heroes"
+msgstr ""
+
+#: inc/pattern-categories.php:26
+msgid "Bold display and centered SaaS hero sections."
+msgstr ""
+
+#: inc/pattern-categories.php:29
+msgid "FoA Cleaner: Sections"
+msgstr ""
+
+#: inc/pattern-categories.php:30
+msgid "Feature grids, spec strips, metrics, comparison tables, pricing, and FAQs."
+msgstr ""
+
+#: inc/pattern-categories.php:33
+msgid "FoA Cleaner: Portfolio"
+msgstr ""
+
+#: inc/pattern-categories.php:34
+msgid "Minimal project grids and case-study showcases."
+msgstr ""
+
+#: inc/pattern-categories.php:37
+msgid "FoA Cleaner: Social Proof"
+msgstr ""
+
+#: inc/pattern-categories.php:38
+msgid "Pull quotes and clean editorial testimonial cards."
+msgstr ""
+
+#: inc/pattern-categories.php:41
+msgid "FoA Cleaner: Editorial"
+msgstr ""
+
+#: inc/pattern-categories.php:42
+msgid "Blog streams, post grids, and chronological yearly archives."
+msgstr ""
+
+#: inc/pattern-categories.php:45
+msgid "FoA Cleaner: Call to Action"
+msgstr ""
+
+#: inc/pattern-categories.php:46
+msgid "High-impact closing bands and newsletter prompts."
+msgstr ""
+
+#: inc/reading-features.php:43
+msgid "Copy"
+msgstr ""
+
+#: inc/reading-features.php:44
+msgid "Copied"
+msgstr ""
+
+#: inc/reading-features.php:45
+msgid "Failed"
+msgstr ""
+
+#: inc/reading-features.php:79
+#: inc/reading-features.php:210
+msgid "Enter focus mode"
+msgstr ""
+
+#: inc/reading-features.php:80
+#: inc/reading-features.php:228
+msgid "Exit focus mode"
+msgstr ""
+
+#: inc/reading-features.php:81
+#: inc/reading-features.php:213
+msgid "Focus"
+msgstr ""
+
+#: inc/reading-features.php:82
+#: inc/reading-features.php:230
+msgid "Exit focus"
+msgstr ""
+
+#: inc/reading-features.php:144
+msgid "No posts published yet."
+msgstr ""
+
+#. translators: %s: number of posts in a given year.
+#: inc/reading-features.php:162
+msgid "%s post"
+msgid_plural "%s posts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/reading-features.php:173
+msgctxt "yearly archive item date format"
+msgid "M j"
+msgstr ""
+
+#: inc/reading-features.php:178
+msgid "(Untitled)"
+msgstr ""
+
+#. translators: %d: estimated reading time in minutes.
+#: inc/reading-features.php:250
+msgid "%d min read"
+msgid_plural "%d min read"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/reading-features.php:299
+msgid "Post navigation"
+msgstr ""
+
+#: patterns/blog-grid.php:24
+msgid "Latest Writing"
+msgstr ""
+
+#: patterns/blog-grid.php:27
+msgid "Notes from the journal."
+msgstr ""
+
+#: patterns/blog-grid.php:35
+msgid "All articles"
+msgstr ""
+
+#: patterns/blog-grid.php:53
+msgid "Publish your first post to populate this writing grid."
+msgstr ""
+
+#: patterns/comparison-table.php:22
+msgid "Comparison"
+msgstr ""
+
+#: patterns/comparison-table.php:25
+msgid "How FoA Cleaner compares."
+msgstr ""
+
+#: patterns/comparison-table.php:35
+msgid "Dimension"
+msgstr ""
+
+#: patterns/comparison-table.php:36
+msgid "Heavy Multipurpose Themes"
+msgstr ""
+
+#: patterns/comparison-table.php:42
+msgid "Block Portability"
+msgstr ""
+
+#: patterns/comparison-table.php:43
+msgid "Proprietary widgets & shortcodes"
+msgstr ""
+
+#: patterns/comparison-table.php:44
+msgid "100% native WordPress core blocks"
+msgstr ""
+
+#: patterns/comparison-table.php:47
+msgid "Typography & Privacy"
+msgstr ""
+
+#: patterns/comparison-table.php:48
+msgid "External CDN font requests"
+msgstr ""
+
+#: patterns/comparison-table.php:49
+msgid "Self-hosted SIL OFL variable .woff2 trio"
+msgstr ""
+
+#: patterns/comparison-table.php:52
+msgid "Light & Dark Modes"
+msgstr ""
+
+#: patterns/comparison-table.php:53
+msgid "Extra plugin or flash on load"
+msgstr ""
+
+#: patterns/comparison-table.php:54
+msgid "Built-in FOUC-free switcher + Vibetiles ready"
+msgstr ""
+
+#: patterns/comparison-table.php:57
+msgid "Frontend Footprint"
+msgstr ""
+
+#: patterns/comparison-table.php:58
+msgid "Bundled CSS/JS loaded globally"
+msgstr ""
+
+#: patterns/comparison-table.php:59
+msgid "Zero jQuery; scripts load conditionally only when needed"
+msgstr ""
+
+#: patterns/cta-dark.php:22
+msgid "Ready When You Are"
+msgstr ""
+
+#: patterns/cta-dark.php:26
+msgid "Publish cleaner pages without the overhead."
+msgstr ""
+
+#: patterns/cta-dark.php:30
+msgid "Install FoA Cleaner in under a minute. Free, open-source GPLv2+, and built for WordPress Site Editor."
+msgstr ""
+
+#: patterns/cta-dark.php:36
+msgid "Download FoA Cleaner"
+msgstr ""
+
+#: patterns/cta-dark.php:40
+msgid "View on GitHub"
+msgstr ""
+
+#: patterns/faq-accordion.php:24
+msgid "FAQ"
+msgstr ""
+
+#: patterns/faq-accordion.php:27
+msgid "Common questions."
+msgstr ""
+
+#: patterns/faq-accordion.php:30
+msgid "Built with native HTML details blocks so every answer is accessible without extra JavaScript."
+msgstr ""
+
+#: patterns/faq-accordion.php:38
+msgid "Does FoA Cleaner require any third-party plugins?"
+msgstr ""
+
+#: patterns/faq-accordion.php:39
+msgid "No. Every template, pattern, dark-mode control, and editorial feature works completely standalone on WordPress 6.6+. Optional Vibetiles integration activates automatically if you install the plugin."
+msgstr ""
+
+#: patterns/faq-accordion.php:44
+msgid "Are the bundled fonts self-hosted and GDPR friendly?"
+msgstr ""
+
+#: patterns/faq-accordion.php:45
+msgid "Yes. Geist, DM Sans, and Geist Mono are served directly from the theme folder as SIL OFL 1.1 variable .woff2 files with zero external CDN requests."
+msgstr ""
+
+#: patterns/faq-accordion.php:50
+msgid "Can I turn off scroll-reveal animations?"
+msgstr ""
+
+#: patterns/faq-accordion.php:51
+msgid "Yes. Toggle micro-animations off anytime under Appearance → FoA Cleaner, or via the foa_cleaner_enable_motion PHP filter. Visitors with OS reduced-motion enabled always get static rendering automatically."
+msgstr ""
+
+#: patterns/faq-accordion.php:56
+msgid "What happens to my content if I switch themes later?"
+msgstr ""
+
+#: patterns/faq-accordion.php:57
+msgid "Every pattern uses standard WordPress core blocks with zero custom theme-locked blocks or shortcodes, so your pages remain intact wherever you move."
+msgstr ""
+
+#: patterns/features-grid.php:22
+msgid "Capabilities"
+msgstr ""
+
+#: patterns/features-grid.php:25
+msgid "Everything essential, nothing extraneous."
+msgstr ""
+
+#: patterns/features-grid.php:40
+msgid "Full Site Editing"
+msgstr ""
+
+#: patterns/features-grid.php:43
+msgid "Edit headers, footers, templates, and typography visually without touching PHP."
+msgstr ""
+
+#: patterns/features-grid.php:58
+msgid "Built-In Dark Mode"
+msgstr ""
+
+#: patterns/features-grid.php:61
+msgid "Flash-free light and dark switching out of the box, with graceful Vibetiles handoff."
+msgstr ""
+
+#: patterns/features-grid.php:76
+msgid "Conditional Assets"
+msgstr ""
+
+#: patterns/features-grid.php:79
+msgid "Copy-code, Focus Mode, and motion scripts load only where they are actually used."
+msgstr ""
+
+#: patterns/features-grid.php:98
+msgid "Editorial Focus Mode"
+msgstr ""
+
+#: patterns/features-grid.php:101
+msgid "Readers can step chrome back with one click while tracking progress via a 1px top bar."
+msgstr ""
+
+#: patterns/features-grid.php:116
+msgid "Vibetiles Harmony"
+msgstr ""
+
+#: patterns/features-grid.php:119
+msgid "Concrete hex tokens and standard landmarks let Vibetiles dial colors and fonts seamlessly."
+msgstr ""
+
+#: patterns/features-grid.php:134
+msgid "Accessible by Default"
+msgstr ""
+
+#: patterns/features-grid.php:137
+msgid "Semantic landmarks, crisp focus rings, keyboard flows, and reduced-motion safeguards."
+msgstr ""
+
+#: patterns/hero-centered.php:22
+msgid "Version 1.0 · WordPress 6.6+ Block Theme"
+msgstr ""
+
+#: patterns/hero-centered.php:26
+msgid "Software crafted for teams that read between the lines."
+msgstr ""
+
+#: patterns/hero-centered.php:30
+msgid "Replace bloated page builders with a restrained system of core block patterns, self-hosted variable fonts, and instant light and dark modes."
+msgstr ""
+
+#: patterns/hero-centered.php:36
+msgid "Start building"
+msgstr ""
+
+#: patterns/hero-centered.php:40
+msgid "Read documentation"
+msgstr ""
+
+#: patterns/hero-centered.php:48
+msgid "100% Core Blocks"
+msgstr ""
+
+#: patterns/hero-centered.php:51
+msgid "Self-Hosted OFL Fonts"
+msgstr ""
+
+#: patterns/hero-centered.php:54
+msgid "Zero External Requests"
+msgstr ""
+
+#: patterns/hero-display.php:22
+msgid "Design System · WordPress Block Theme"
+msgstr ""
+
+#: patterns/hero-display.php:26
+msgid "Clarity scales. Clutter does not."
+msgstr ""
+
+#: patterns/hero-display.php:34
+msgid "A quiet, typographically sharp foundation for product pages, editorial writing, and studio portfolios — engineered with zero runtime bloat."
+msgstr ""
+
+#: patterns/hero-display.php:44
+msgid "Download Free"
+msgstr ""
+
+#: patterns/hero-display.php:48
+msgid "Explore Patterns"
+msgstr ""
+
+#: patterns/hidden-404.php:18
+msgid "Error 404"
+msgstr ""
+
+#: patterns/hidden-404.php:22
+msgid "This page could not be found."
+msgstr ""
+
+#: patterns/hidden-404.php:26
+msgid "The address may have moved, or the link might be outdated. Search the site or head back to the homepage."
+msgstr ""
+
+#: patterns/hidden-404.php:31
+#: patterns/hidden-footer.php:40
+#: patterns/hidden-footer.php:42
+#: patterns/hidden-search-results.php:17
+msgid "Search"
+msgstr ""
+
+#: patterns/hidden-404.php:31
+msgid "Search the site…"
+msgstr ""
+
+#: patterns/hidden-404.php:38
+#: patterns/hidden-search-results.php:57
+msgid "Back to home"
+msgstr ""
+
+#: patterns/hidden-blog-header.php:21
+msgid "Writing"
+msgstr ""
+
+#: patterns/hidden-blog-header.php:26
+#: patterns/hidden-front-page.php:28
+msgid "Journal"
+msgstr ""
+
+#: patterns/hidden-footer.php:31
+msgid "Navigation"
+msgstr ""
+
+#: patterns/hidden-footer.php:42
+msgid "Search articles…"
+msgstr ""
+
+#. translators: 1: current year, 2: site name.
+#: patterns/hidden-footer.php:55
+msgid "© %1$s %2$s. All rights reserved."
+msgstr ""
+
+#. translators: %s: theme name link.
+#: patterns/hidden-footer.php:68
+msgid "Built with %s"
+msgstr ""
+
+#: patterns/hidden-header.php:37
+msgid "Get in touch"
+msgstr ""
+
+#: patterns/hidden-post-loop.php:31
+msgid "Read article →"
+msgstr ""
+
+#: patterns/hidden-post-loop.php:37
+msgid "← Newer"
+msgstr ""
+
+#: patterns/hidden-post-loop.php:39
+msgid "Older →"
+msgstr ""
+
+#: patterns/hidden-post-loop.php:46
+msgid "Nothing published here yet."
+msgstr ""
+
+#: patterns/hidden-post-loop.php:49
+msgid "Check back soon or try searching for another topic."
+msgstr ""
+
+#: patterns/hidden-post-navigation.php:17
+#: patterns/hidden-search-results.php:40
+msgid "← Previous"
+msgstr ""
+
+#: patterns/hidden-post-navigation.php:18
+#: patterns/hidden-search-results.php:42
+msgid "Next →"
+msgstr ""
+
+#: patterns/hidden-search-results.php:17
+msgid "Search posts and pages…"
+msgstr ""
+
+#: patterns/hidden-search-results.php:34
+msgid "Read more →"
+msgstr ""
+
+#: patterns/hidden-search-results.php:49
+msgid "No results found."
+msgstr ""
+
+#: patterns/hidden-search-results.php:52
+msgid "Try a different keyword or return to the homepage to browse recent writing."
+msgstr ""
+
+#: patterns/portfolio-grid.php:24
+msgid "Selected Work"
+msgstr ""
+
+#: patterns/portfolio-grid.php:27
+msgid "Recent projects & systems."
+msgstr ""
+
+#: patterns/portfolio-grid.php:35
+msgid "View all work"
+msgstr ""
+
+#: patterns/portfolio-grid.php:51
+#: patterns/portfolio-grid.php:83
+msgid "16:10 Project Preview"
+msgstr ""
+
+#: patterns/portfolio-grid.php:58
+msgid "Product Design · Systems"
+msgstr ""
+
+#: patterns/portfolio-grid.php:61
+#: patterns/portfolio-grid.php:93
+msgid "2026"
+msgstr ""
+
+#: patterns/portfolio-grid.php:66
+msgid "Northwind Analytics Platform"
+msgstr ""
+
+#: patterns/portfolio-grid.php:69
+msgid "Unified design tokens and documentation architecture across web, marketing, and telemetry dashboards."
+msgstr ""
+
+#: patterns/portfolio-grid.php:90
+msgid "Editorial · WordPress"
+msgstr ""
+
+#: patterns/portfolio-grid.php:98
+msgid "Monograph Publishing House"
+msgstr ""
+
+#: patterns/portfolio-grid.php:101
+msgid "A distraction-free long-form journal with chronological archives, Focus Mode, and zero third-party scripts."
+msgstr ""
+
+#: patterns/pricing.php:22
+msgid "Pricing"
+msgstr ""
+
+#: patterns/pricing.php:25
+msgid "Simple, transparent plans."
+msgstr ""
+
+#: patterns/pricing.php:39
+msgid "Starter"
+msgstr ""
+
+#: patterns/pricing.php:42
+msgid "$0"
+msgstr ""
+
+#: patterns/pricing.php:45
+msgid "For personal blogs, journals, and open-source documentation."
+msgstr ""
+
+#: patterns/pricing.php:53
+msgid "All 10 core templates & 15 patterns"
+msgstr ""
+
+#: patterns/pricing.php:56
+msgid "Built-in light & dark switcher"
+msgstr ""
+
+#: patterns/pricing.php:59
+msgid "Self-hosted Geist & DM Sans fonts"
+msgstr ""
+
+#: patterns/pricing.php:67
+msgid "Choose Starter"
+msgstr ""
+
+#: patterns/pricing.php:85
+msgid "Studio"
+msgstr ""
+
+#: patterns/pricing.php:88
+msgid "Most Popular"
+msgstr ""
+
+#: patterns/pricing.php:93
+msgid "$49"
+msgstr ""
+
+#: patterns/pricing.php:96
+msgid "For growing SaaS teams and independent product studios."
+msgstr ""
+
+#: patterns/pricing.php:104
+msgid "Everything in Starter"
+msgstr ""
+
+#: patterns/pricing.php:107
+msgid "Curated Global Style Variations"
+msgstr ""
+
+#: patterns/pricing.php:110
+msgid "Priority setup & migration guidance"
+msgstr ""
+
+#: patterns/pricing.php:118
+msgid "Choose Studio"
+msgstr ""
+
+#: patterns/pricing.php:134
+msgid "Enterprise"
+msgstr ""
+
+#: patterns/pricing.php:137
+msgid "Custom"
+msgstr ""
+
+#: patterns/pricing.php:140
+msgid "For multi-brand publishing networks and bespoke design systems."
+msgstr ""
+
+#: patterns/pricing.php:148
+msgid "Unlimited multisite deployments"
+msgstr ""
+
+#: patterns/pricing.php:151
+msgid "Custom pattern library workshops"
+msgstr ""
+
+#: patterns/pricing.php:154
+msgid "Dedicated performance & WCAG audits"
+msgstr ""
+
+#: patterns/pricing.php:162
+msgid "Contact sales"
+msgstr ""
+
+#: patterns/principles-dark.php:22
+msgid "Design Principles"
+msgstr ""
+
+#: patterns/principles-dark.php:25
+msgid "Three rules that hold the layout together."
+msgstr ""
+
+#: patterns/principles-dark.php:37
+msgid "01"
+msgstr ""
+
+#: patterns/principles-dark.php:40
+msgid "Whitespace is structural"
+msgstr ""
+
+#: patterns/principles-dark.php:43
+msgid "Generous vertical rhythm and calm margins replace heavy borders, gradients, and decorative boxes."
+msgstr ""
+
+#: patterns/principles-dark.php:55
+msgid "02"
+msgstr ""
+
+#: patterns/principles-dark.php:58
+msgid "Type does the heavy lifting"
+msgstr ""
+
+#: patterns/principles-dark.php:61
+msgid "Crisp scale contrast between Geist headings, DM Sans prose, and Geist Mono labels establishes clear hierarchy."
+msgstr ""
+
+#: patterns/principles-dark.php:73
+msgid "03"
+msgstr ""
+
+#: patterns/principles-dark.php:76
+msgid "Content stays portable"
+msgstr ""
+
+#: patterns/principles-dark.php:79
+msgid "Pure WordPress core blocks guarantee your pages remain clean, fast, and intact across future updates."
+msgstr ""
+
+#: patterns/pull-quote.php:20
+msgid "Good typography is invisible until you remove the noise around it — then the writing carries the entire page."
+msgstr ""
+
+#: patterns/pull-quote.php:20
+msgid "Elena Kovacs, Principal Designer at Northwind"
+msgstr ""
+
+#: patterns/spec-strip.php:24
+msgid "Architecture"
+msgstr ""
+
+#: patterns/spec-strip.php:27
+msgid "theme.json v3"
+msgstr ""
+
+#: patterns/spec-strip.php:35
+msgid "Typography"
+msgstr ""
+
+#: patterns/spec-strip.php:38
+msgid "Geist & DM Sans"
+msgstr ""
+
+#: patterns/spec-strip.php:46
+msgid "Color Modes"
+msgstr ""
+
+#: patterns/spec-strip.php:49
+msgid "Light & Dark Native"
+msgstr ""
+
+#: patterns/spec-strip.php:57
+msgid "Dependencies"
+msgstr ""
+
+#: patterns/spec-strip.php:60
+msgid "Zero Frameworks"
+msgstr ""
+
+#: patterns/stats-grid.php:22
+msgid "By the Numbers"
+msgstr ""
+
+#: patterns/stats-grid.php:25
+msgid "Engineered for speed and longevity."
+msgstr ""
+
+#: patterns/stats-grid.php:37
+msgid "100"
+msgstr ""
+
+#: patterns/stats-grid.php:40
+msgid "Lighthouse Performance"
+msgstr ""
+
+#: patterns/stats-grid.php:43
+msgid "Conditional vanilla scripts and self-hosted variable fonts keep payloads razor thin."
+msgstr ""
+
+#: patterns/stats-grid.php:55
+msgid "0 KB"
+msgstr ""
+
+#: patterns/stats-grid.php:58
+msgid "Third-Party Trackers"
+msgstr ""
+
+#: patterns/stats-grid.php:61
+msgid "No Google Fonts CDN calls, no icon fonts, and no external JavaScript frameworks."
+msgstr ""
+
+#: patterns/stats-grid.php:73
+msgid "15+"
+msgstr ""
+
+#: patterns/stats-grid.php:76
+msgid "Core Block Patterns"
+msgstr ""
+
+#: patterns/stats-grid.php:79
+msgid "Every layout is built exclusively from native WordPress blocks with zero lock-in."
+msgstr ""
+
+#: patterns/testimonials.php:22
+msgid "Testimonials"
+msgstr ""
+
+#: patterns/testimonials.php:25
+msgid "Trusted by studios and writers."
+msgstr ""
+
+#: patterns/testimonials.php:37
+msgid "“We migrated our entire product site off a heavy page builder in an afternoon. Lighthouse jumped to 100 and our editorial team loves the Site Editor.”"
+msgstr ""
+
+#: patterns/testimonials.php:42
+msgid "Marek Nowak"
+msgstr ""
+
+#: patterns/testimonials.php:45
+msgid "CTO · Relay Systems"
+msgstr ""
+
+#: patterns/testimonials.php:59
+msgid "“Finally a WordPress theme that treats long-form reading and SaaS landing pages with the same level of typographic restraint.”"
+msgstr ""
+
+#: patterns/testimonials.php:64
+msgid "Hannah Lindqvist"
+msgstr ""
+
+#: patterns/testimonials.php:67
+msgid "Independent Writer"
+msgstr ""
+
+#: patterns/testimonials.php:81
+msgid "“The dark mode is cohesive, the yearly archive is effortless, and pairing it with Vibetiles made client approvals ten times faster.”"
+msgstr ""
+
+#: patterns/testimonials.php:86
+msgid "David Chen"
+msgstr ""
+
+#: patterns/testimonials.php:89
+msgid "Founder · Studio Kestrel"
+msgstr ""
+
+#: patterns/yearly-archive.php:22
+msgid "Index"
+msgstr ""
+
+#: patterns/yearly-archive.php:25
+msgid "All writing by year."
+msgstr ""
+
+#: patterns/blog-grid.php:3
+msgctxt "Pattern title"
+msgid "Latest Posts Grid"
+msgstr ""
+
+#: patterns/comparison-table.php:3
+msgctxt "Pattern title"
+msgid "Side-by-Side Comparison Table"
+msgstr ""
+
+#: patterns/cta-dark.php:3
+msgctxt "Pattern title"
+msgid "Dark Closing CTA"
+msgstr ""
+
+#: patterns/faq-accordion.php:3
+msgctxt "Pattern title"
+msgid "FAQ Accordion"
+msgstr ""
+
+#: patterns/features-grid.php:3
+msgctxt "Pattern title"
+msgid "Feature Cards Grid"
+msgstr ""
+
+#: patterns/hero-centered.php:3
+msgctxt "Pattern title"
+msgid "Centered SaaS Hero"
+msgstr ""
+
+#: patterns/hero-display.php:3
+msgctxt "Pattern title"
+msgid "Bold Display Hero"
+msgstr ""
+
+#: patterns/hidden-404.php:3
+msgctxt "Pattern title"
+msgid "404 Not Found (Internal)"
+msgstr ""
+
+#: patterns/hidden-blog-header.php:3
+msgctxt "Pattern title"
+msgid "Blog Header (Internal)"
+msgstr ""
+
+#: patterns/hidden-comments.php:3
+msgctxt "Pattern title"
+msgid "Comments Section (Internal)"
+msgstr ""
+
+#: patterns/hidden-footer.php:3
+msgctxt "Pattern title"
+msgid "Footer (Internal)"
+msgstr ""
+
+#: patterns/hidden-front-page.php:3
+msgctxt "Pattern title"
+msgid "Front Page Content (Internal)"
+msgstr ""
+
+#: patterns/hidden-header.php:3
+msgctxt "Pattern title"
+msgid "Header (Internal)"
+msgstr ""
+
+#: patterns/hidden-post-loop.php:3
+msgctxt "Pattern title"
+msgid "Post Loop (Internal)"
+msgstr ""
+
+#: patterns/hidden-post-navigation.php:3
+msgctxt "Pattern title"
+msgid "Single Post Navigation (Internal)"
+msgstr ""
+
+#: patterns/hidden-search-results.php:3
+msgctxt "Pattern title"
+msgid "Search Results (Internal)"
+msgstr ""
+
+#: patterns/hidden-yearly-archive.php:3
+msgctxt "Pattern title"
+msgid "Yearly Archive List (Internal)"
+msgstr ""
+
+#: patterns/portfolio-grid.php:3
+msgctxt "Pattern title"
+msgid "Portfolio & Case Study Grid"
+msgstr ""
+
+#: patterns/pricing.php:3
+msgctxt "Pattern title"
+msgid "Three-Tier Pricing Table"
+msgstr ""
+
+#: patterns/principles-dark.php:3
+msgctxt "Pattern title"
+msgid "Dark Principles Band"
+msgstr ""
+
+#: patterns/pull-quote.php:3
+msgctxt "Pattern title"
+msgid "Editorial Pull Quote"
+msgstr ""
+
+#: patterns/spec-strip.php:3
+msgctxt "Pattern title"
+msgid "Spec & Metadata Strip"
+msgstr ""
+
+#: patterns/stats-grid.php:3
+msgctxt "Pattern title"
+msgid "Big Stats Grid"
+msgstr ""
+
+#: patterns/testimonials.php:3
+msgctxt "Pattern title"
+msgid "Testimonials Grid"
+msgstr ""
+
+#: patterns/yearly-archive.php:3
+msgctxt "Pattern title"
+msgid "Chronological Yearly Archive"
+msgstr ""

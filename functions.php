@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FOA_CLEANER_VERSION', '0.1.0' );
+define( 'FOA_CLEANER_VERSION', '1.0.0' );
 
 /**
  * Return a cache-busting version string for a theme-relative asset.
