@@ -18,7 +18,7 @@ FoA Cleaner is a restraint-first WordPress block theme crafted for SaaS product 
 * **20 Clean Design Block Patterns**: Bold Display Hero, Centered SaaS Hero, Spec Strip, Big Stats Grid, Dark Principles Band, Feature Cards Grid, Portfolio Grid, Dynamic Portfolio Query Grid, Portfolio Index List, Portfolio Editorial Gallery, Portfolio Full-Bleed Showcase Strip, Case Study Layout, Side-by-Side Comparison Table, Editorial Pull Quote, Testimonials, Three-Tier Pricing, Native FAQ Accordion, Latest Posts Grid, Chronological Yearly Archive, and Dark Closing CTA.
 * **4 Curated Global Style Variations**: Default Clean Light (with FoA Blue `#2E70FF`), Swiss Ink, Warm Paper, Midnight Slate (native dark-first), and Forest Studio.
 * **Editorial & Reading Polish**: Conditional copy-to-clipboard buttons on code blocks, single-post Focus Mode with a 1px reading progress bar, chronological Yearly Archive and Wide Page (`1200px`) custom page templates, and Post Format cards (Aside, Quote, Link, Status).
-* **Portfolio & Optional Jetpack Portfolio Support**: Includes a native Case Study page template and base portfolio patterns with zero plugins required, plus an opt-in Jetpack Portfolio toggle under Appearance > FoA Cleaner (`add_theme_support( 'jetpack-portfolio' )`) with matching archive, project-type taxonomy, and single project templates.
+* **Portfolio & Optional Jetpack Integrations**: Includes a native Case Study page template and base/gallery portfolio patterns with zero plugins required, plus a non-intrusive Recommended Companion Plugins panel (Vibetiles & Jetpack) under Appearance > FoA Cleaner with mirrored Jetpack Portfolio and Jetpack Markdown (for CV) toggles.
 * **Progressive Micro-Animations**: Subtle IntersectionObserver scroll-reveal transitions enabled by default, with an easy opt-out under Appearance > FoA Cleaner (or via the `foa_cleaner_enable_motion` filter) and automatic `prefers-reduced-motion` support.
 * **Vibetiles Ready (Optional)**: Zero hard dependency, full Guest Mode palette and dark-mode coexistence out of the box.
 
@@ -44,9 +44,9 @@ Create a new Page, assign the "Yearly Archive" template in the Page sidebar (or 
 
 Go to Appearance > FoA Cleaner and uncheck "Enable subtle scroll-reveal and interaction micro-animations", or return `false` from the `foa_cleaner_enable_motion` PHP filter. Visitors with reduced motion enabled in their operating system always receive static rendering automatically.
 
-= How do I enable Jetpack Portfolio Projects in this block theme? =
+= How do I enable Jetpack Portfolio Projects and Markdown in this block theme? =
 
-Jetpack v14.4+ hides its Custom Content Types settings in block themes by default. To use Jetpack's `jetpack-portfolio` post type, go to Appearance > FoA Cleaner and check "Enable Jetpack Portfolio theme support", or return `true` from the `foa_cleaner_enable_jetpack_portfolio` PHP filter. FoA Cleaner will automatically style the portfolio archive, project-type archive, and single project views. Without Jetpack, you can build portfolios natively using Pages, the "Case Study" page template, and FoA Cleaner's portfolio patterns.
+Go to Appearance > FoA Cleaner. From the Recommended Companion Plugins panel (or the inline Install/Activate Jetpack link beside each option), install and activate Jetpack, then toggle "Jetpack Portfolio" (mirrors Jetpack's `jetpack_portfolio` setting and restores Portfolio Projects in block themes) and/or "Jetpack Markdown (for CV)" (mirrors Jetpack's Markdown module for CV and documentation pages). Without Jetpack, both toggles stay disabled and you can build portfolios natively using Pages, the "Case Study" page template, and FoA Cleaner's portfolio patterns.
 
 = Does FoA Cleaner load fonts from Google Fonts? =
 

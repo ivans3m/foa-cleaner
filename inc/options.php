@@ -21,13 +21,14 @@ define( 'FOA_CLEANER_OPTION_KEY', 'foa_cleaner_options' );
  *
  * @since 0.1.0
  *
- * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool}
+ * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool}
  */
 function foa_cleaner_option_defaults(): array {
 	return array(
 		'default_color_mode'       => 'light',
 		'enable_motion'            => true,
 		'enable_jetpack_portfolio' => false,
+		'enable_jetpack_markdown'  => false,
 	);
 }
 
@@ -36,7 +37,7 @@ function foa_cleaner_option_defaults(): array {
  *
  * @since 0.1.0
  *
- * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool}
+ * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool}
  */
 function foa_cleaner_get_options(): array {
 	$defaults = foa_cleaner_option_defaults();
@@ -170,6 +171,13 @@ function foa_cleaner_is_jetpack_portfolio_enabled(): bool {
 	$options = foa_cleaner_get_options();
 	$enabled = ! empty( $options['enable_jetpack_portfolio'] );
 
+	if ( foa_cleaner_is_jetpack_active() ) {
+		$jp_value = get_option( 'jetpack_portfolio', null );
+		if ( null !== $jp_value ) {
+			$enabled = '1' === (string) $jp_value || true === $jp_value;
+		}
+	}
+
 	/**
 	 * Filter whether FoA Cleaner declares theme support for Jetpack Portfolios.
 	 *
@@ -181,15 +189,48 @@ function foa_cleaner_is_jetpack_portfolio_enabled(): bool {
 }
 
 /**
+ * Check whether Jetpack Markdown is currently enabled (mirrored from Jetpack).
+ *
+ * @since 1.1.0
+ *
+ * @return bool True when Jetpack Markdown is active.
+ */
+function foa_cleaner_is_jetpack_markdown_enabled(): bool {
+	$enabled = false;
+
+	if ( foa_cleaner_is_jetpack_active() ) {
+		if ( class_exists( 'Jetpack' ) && method_exists( 'Jetpack', 'is_module_active' ) ) {
+			$enabled = (bool) Jetpack::is_module_active( 'markdown' );
+		} else {
+			$enabled = '1' === (string) get_option( 'wpcom_publish_posts_with_markdown', '' );
+		}
+	}
+
+	/**
+	 * Filter whether Jetpack Markdown is treated as enabled.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param bool $enabled True when Jetpack Markdown is active.
+	 */
+	return (bool) apply_filters( 'foa_cleaner_enable_jetpack_markdown', $enabled );
+}
+
+/**
  * Sanitize theme options before saving to the database.
+ *
+ * Preserves Jetpack integration preferences when Jetpack is inactive so
+ * disabled checkboxes are not inadvertently cleared on unrelated saves.
  *
  * @since 0.1.0
  *
  * @param mixed $input Raw submitted form values.
- * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool} Sanitized option array.
+ * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool} Sanitized option array.
  */
 function foa_cleaner_sanitize_options( $input ): array {
-	$defaults = foa_cleaner_option_defaults();
+	$defaults       = foa_cleaner_option_defaults();
+	$existing       = foa_cleaner_get_options();
+	$jetpack_active = foa_cleaner_is_jetpack_active();
 
 	if ( ! is_array( $input ) ) {
 		return $defaults;
@@ -201,12 +242,32 @@ function foa_cleaner_sanitize_options( $input ): array {
 	return array(
 		'default_color_mode'       => in_array( $mode, $allowed_modes, true ) ? $mode : $defaults['default_color_mode'],
 		'enable_motion'            => ! empty( $input['enable_motion'] ),
-		'enable_jetpack_portfolio' => ! empty( $input['enable_jetpack_portfolio'] ),
+		'enable_jetpack_portfolio' => $jetpack_active ? ! empty( $input['enable_jetpack_portfolio'] ) : ! empty( $existing['enable_jetpack_portfolio'] ),
+		'enable_jetpack_markdown'  => $jetpack_active ? ! empty( $input['enable_jetpack_markdown'] ) : ! empty( $existing['enable_jetpack_markdown'] ),
 	);
 }
 
 /**
- * Schedule a one-time rewrite flush when Jetpack Portfolio support is first saved.
+ * Mirror Jetpack Portfolio & Markdown settings whenever FoA Cleaner options are saved.
+ *
+ * Hooked to `pre_update_option_` so syncing runs even when the stored
+ * `foa_cleaner_options` array matches the submitted value (for example, when a
+ * Jetpack setting was changed directly in Jetpack Settings → Writing first).
+ *
+ * @since 1.1.0
+ *
+ * @param mixed $new_value Newly sanitized option value.
+ * @param mixed $old_value Previous option value.
+ * @return mixed Unmodified `$new_value`.
+ */
+function foa_cleaner_sync_jetpack_on_save( $new_value, $old_value ) {
+	foa_cleaner_maybe_flush_portfolio_rewrites( $old_value, $new_value );
+	return $new_value;
+}
+add_filter( 'pre_update_option_' . FOA_CLEANER_OPTION_KEY, 'foa_cleaner_sync_jetpack_on_save', 10, 2 );
+
+/**
+ * Mirror Jetpack Portfolio & Markdown settings when FoA Cleaner options are first saved.
  *
  * WordPress fires `add_option_{$option}` rather than `update_option_{$option}`
  * when the option row does not yet exist in the database.
@@ -217,12 +278,13 @@ function foa_cleaner_sanitize_options( $input ): array {
  * @param mixed  $value  Newly added option value.
  */
 function foa_cleaner_maybe_flush_portfolio_rewrites_on_add( string $option, $value ): void {
+	unset( $option );
 	foa_cleaner_maybe_flush_portfolio_rewrites( array(), $value );
 }
 add_action( 'add_option_' . FOA_CLEANER_OPTION_KEY, 'foa_cleaner_maybe_flush_portfolio_rewrites_on_add', 10, 2 );
 
 /**
- * Schedule a one-time rewrite flush when Jetpack Portfolio support is toggled.
+ * Mirror Jetpack Portfolio & Markdown settings and schedule rewrite flush when toggled.
  *
  * @since 1.1.0
  *
@@ -230,17 +292,71 @@ add_action( 'add_option_' . FOA_CLEANER_OPTION_KEY, 'foa_cleaner_maybe_flush_por
  * @param mixed $new_value Updated option value.
  */
 function foa_cleaner_maybe_flush_portfolio_rewrites( $old_value, $new_value ): void {
-	$was_enabled = is_array( $old_value ) && ! empty( $old_value['enable_jetpack_portfolio'] );
-	$is_enabled  = is_array( $new_value ) && ! empty( $new_value['enable_jetpack_portfolio'] );
+	static $syncing = false;
 
-	if ( $was_enabled !== $is_enabled ) {
-		if ( $is_enabled && ( defined( 'JETPACK__VERSION' ) || class_exists( 'Automattic\Jetpack\Classic_Theme_Helper\Jetpack_Portfolio' ) ) ) {
-			update_option( 'jetpack_portfolio', '1' );
-		}
+	if ( $syncing || ! foa_cleaner_is_jetpack_active() || ! is_array( $new_value ) ) {
+		return;
+	}
+
+	$syncing = true;
+
+	$was_portfolio    = is_array( $old_value ) && ! empty( $old_value['enable_jetpack_portfolio'] );
+	$is_portfolio     = ! empty( $new_value['enable_jetpack_portfolio'] );
+	$live_jp_portf    = '1' === (string) get_option( 'jetpack_portfolio', '' );
+
+	if ( $was_portfolio !== $is_portfolio || $live_jp_portf !== $is_portfolio ) {
+		update_option( 'jetpack_portfolio', $is_portfolio ? '1' : '0' );
 		set_transient( 'foa_cleaner_flush_rewrites', 1, MINUTE_IN_SECONDS );
 	}
+
+	$is_markdown     = ! empty( $new_value['enable_jetpack_markdown'] );
+	$was_jp_markdown = foa_cleaner_is_jetpack_markdown_enabled();
+
+	if ( $is_markdown !== $was_jp_markdown ) {
+		if ( class_exists( 'Jetpack' ) ) {
+			if ( $is_markdown && method_exists( 'Jetpack', 'activate_module' ) ) {
+				Jetpack::activate_module( 'markdown', false, false );
+			} elseif ( ! $is_markdown && method_exists( 'Jetpack', 'deactivate_module' ) ) {
+				Jetpack::deactivate_module( 'markdown' );
+			}
+		}
+		update_option( 'wpcom_publish_posts_with_markdown', $is_markdown ? '1' : '0' );
+	}
+
+	$syncing = false;
 }
-add_action( 'update_option_' . FOA_CLEANER_OPTION_KEY, 'foa_cleaner_maybe_flush_portfolio_rewrites', 10, 2 );
+
+/**
+ * Keep FoA Cleaner's Portfolio option mirrored if `jetpack_portfolio` is toggled
+ * directly inside Jetpack Settings → Writing.
+ *
+ * @since 1.1.0
+ *
+ * @param mixed $old_value Previous `jetpack_portfolio` value.
+ * @param mixed $new_value Updated `jetpack_portfolio` value.
+ */
+function foa_cleaner_mirror_jetpack_portfolio_option( $old_value, $new_value ): void {
+	static $mirroring = false;
+
+	unset( $old_value );
+
+	if ( $mirroring ) {
+		return;
+	}
+
+	$enabled = '1' === (string) $new_value || true === $new_value;
+	$options = foa_cleaner_get_options();
+
+	if ( (bool) $options['enable_jetpack_portfolio'] === $enabled ) {
+		return;
+	}
+
+	$mirroring                           = true;
+	$options['enable_jetpack_portfolio'] = $enabled;
+	update_option( FOA_CLEANER_OPTION_KEY, $options );
+	$mirroring                           = false;
+}
+add_action( 'update_option_jetpack_portfolio', 'foa_cleaner_mirror_jetpack_portfolio_option', 10, 2 );
 
 /**
  * Flush rewrite rules once after the Jetpack Portfolio toggle changes.
@@ -310,6 +426,15 @@ function foa_cleaner_register_settings(): void {
 		'foa-cleaner-options',
 		'foa_cleaner_integrations_section',
 		array( 'label_for' => 'foa-cleaner-enable-jetpack-portfolio' )
+	);
+
+	add_settings_field(
+		'foa_cleaner_enable_jetpack_markdown',
+		__( 'Jetpack Markdown (for CV)', 'foa-cleaner' ),
+		'foa_cleaner_render_jetpack_markdown_field',
+		'foa-cleaner-options',
+		'foa_cleaner_integrations_section',
+		array( 'label_for' => 'foa-cleaner-enable-jetpack-markdown' )
 	);
 }
 add_action( 'admin_init', 'foa_cleaner_register_settings' );
@@ -398,26 +523,56 @@ function foa_cleaner_render_integrations_section_intro(): void {
 }
 
 /**
- * Render the Jetpack Portfolio checkbox control.
+ * Render the Jetpack Portfolio checkbox control (mirrored with Jetpack).
  *
  * @since 1.1.0
  */
 function foa_cleaner_render_jetpack_portfolio_field(): void {
-	$options        = foa_cleaner_get_options();
-	$checked        = ! empty( $options['enable_jetpack_portfolio'] );
-	$jetpack_active = defined( 'JETPACK__VERSION' ) || class_exists( 'Automattic\Jetpack\Classic_Theme_Helper\Jetpack_Portfolio' );
+	$jetpack_active = foa_cleaner_is_jetpack_active();
+	$checked        = $jetpack_active && foa_cleaner_is_jetpack_portfolio_enabled();
+	$label_class    = $jetpack_active ? '' : ' class="foa-field-disabled"';
 
 	printf(
-		'<label for="foa-cleaner-enable-jetpack-portfolio"><input type="checkbox" id="foa-cleaner-enable-jetpack-portfolio" name="%1$s[enable_jetpack_portfolio]" value="1"%2$s /> %3$s</label>',
+		'<label for="foa-cleaner-enable-jetpack-portfolio"%1$s><input type="checkbox" id="foa-cleaner-enable-jetpack-portfolio" name="%2$s[enable_jetpack_portfolio]" value="1"%3$s%4$s /> %5$s</label>',
+		$label_class, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute string.
 		esc_attr( FOA_CLEANER_OPTION_KEY ),
 		checked( $checked, true, false ),
-		esc_html__( 'Enable Jetpack Portfolio theme support (jetpack-portfolio custom post type)', 'foa-cleaner' )
+		disabled( ! $jetpack_active, true, false ),
+		esc_html__( 'Enable Jetpack Portfolio projects (jetpack-portfolio custom post type)', 'foa-cleaner' )
 	);
 
-	if ( $jetpack_active ) {
-		echo '<p class="description">' . esc_html__( 'Jetpack is active. Enabling this restores Portfolio Projects in block themes and activates FoA Cleaner portfolio archive and single project templates.', 'foa-cleaner' ) . '</p>';
+	if ( ! $jetpack_active ) {
+		foa_cleaner_render_jetpack_inline_action();
+		echo '<p class="description">' . esc_html__( 'Install and activate Jetpack to enable Portfolio Projects here, or build portfolios natively using Pages and FoA Cleaner portfolio patterns.', 'foa-cleaner' ) . '</p>';
 	} else {
-		echo '<p class="description">' . esc_html__( 'Jetpack is not currently active. This setting has no effect without Jetpack; you can also build portfolios natively using Pages and FoA Cleaner portfolio patterns.', 'foa-cleaner' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Mirrored with Jetpack Settings → Writing. Restores Portfolio Projects in block themes and activates FoA Cleaner portfolio archive and single project templates.', 'foa-cleaner' ) . '</p>';
+	}
+}
+
+/**
+ * Render the Jetpack Markdown (for CV) checkbox control (mirrored with Jetpack).
+ *
+ * @since 1.1.0
+ */
+function foa_cleaner_render_jetpack_markdown_field(): void {
+	$jetpack_active = foa_cleaner_is_jetpack_active();
+	$checked        = $jetpack_active && foa_cleaner_is_jetpack_markdown_enabled();
+	$label_class    = $jetpack_active ? '' : ' class="foa-field-disabled"';
+
+	printf(
+		'<label for="foa-cleaner-enable-jetpack-markdown"%1$s><input type="checkbox" id="foa-cleaner-enable-jetpack-markdown" name="%2$s[enable_jetpack_markdown]" value="1"%3$s%4$s /> %5$s</label>',
+		$label_class, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute string.
+		esc_attr( FOA_CLEANER_OPTION_KEY ),
+		checked( $checked, true, false ),
+		disabled( ! $jetpack_active, true, false ),
+		esc_html__( 'Enable Jetpack Markdown block & Markdown writing support (for CV pages)', 'foa-cleaner' )
+	);
+
+	if ( ! $jetpack_active ) {
+		foa_cleaner_render_jetpack_inline_action();
+		echo '<p class="description">' . esc_html__( 'Install and activate Jetpack to mirror Markdown support for CV and documentation pages.', 'foa-cleaner' ) . '</p>';
+	} else {
+		echo '<p class="description">' . esc_html__( 'Mirrored with Jetpack Settings → Writing (Markdown module). Enables the Jetpack Markdown block for pasting structured CV Markdown directly in the Block Editor.', 'foa-cleaner' ) . '</p>';
 	}
 }
 
@@ -433,6 +588,7 @@ function foa_cleaner_render_options_page(): void {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'FoA Cleaner Settings', 'foa-cleaner' ); ?></h1>
+		<?php foa_cleaner_render_recommended_plugins_panel(); ?>
 		<form action="options.php" method="post">
 			<?php
 			settings_fields( 'foa_cleaner_settings_group' );

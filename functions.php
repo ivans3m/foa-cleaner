@@ -33,6 +33,7 @@ function foa_cleaner_asset_version( string $relative_path ): string {
  */
 $foa_cleaner_includes = array(
 	'inc/options.php',
+	'inc/recommended-plugins.php',
 	'inc/icons.php',
 	'inc/vibetiles.php',
 	'inc/block-styles.php',
