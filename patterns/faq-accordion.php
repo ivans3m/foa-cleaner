@@ -32,8 +32,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<!-- /wp:column -->
 
-		<!-- wp:column {"width":"66%"} -->
-		<div class="wp-block-column" style="flex-basis:66%">
+		<!-- wp:column {"width":"66%","className":"foa-reveal-stagger"} -->
+		<div class="wp-block-column foa-reveal-stagger" style="flex-basis:66%">
 			<!-- wp:details {"className":"is-style-clean-accordion"} -->
 			<details class="wp-block-details is-style-clean-accordion"><summary><?php esc_html_e( 'Does FoA Cleaner require any third-party plugins?', 'foa-cleaner' ); ?></summary><!-- wp:paragraph {"textColor":"contrast-secondary"} -->
 			<p class="has-contrast-secondary-color has-text-color"><?php esc_html_e( 'No. Every template, pattern, dark-mode control, and editorial feature works completely standalone on WordPress 6.6+. Optional Vibetiles integration activates automatically if you install the plugin.', 'foa-cleaner' ); ?></p>

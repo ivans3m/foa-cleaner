@@ -1,10 +1,23 @@
 /*
- * FoA Cleaner — Subtle Clean Design Micro-Animations
+ * FoA Cleaner — Clean Design Micro-Animations & Choreography
  *
  * Loaded only when micro-animations are enabled in Appearance → FoA Cleaner
- * (or via foa_cleaner_enable_motion filter). Progressive-enhanced: elements
- * only start hidden when html.foa-js-motion is set by reveal.js.
+ * (or via foa_cleaner_enable_motion filter). Progressive-enhanced via
+ * html.foa-js-motion set before first paint in <head> (zero flash).
  */
+
+/* --------------------------------------------------------------------------
+ * 1. Keyframes
+ * -------------------------------------------------------------------------- */
+
+@keyframes foaLineUp {
+	from {
+		transform: translateY(130%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
 
 @keyframes foaFadeUp {
 	from {
@@ -17,93 +30,285 @@
 	}
 }
 
-/* Scroll-reveal elements (hidden only once reveal.js signals readiness) */
+@keyframes foaFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes foaShimmer {
+	from {
+		left: -70%;
+	}
+	to {
+		left: 130%;
+	}
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Header & Hero Load Choreography (clean-design.html fidelity)
+ * -------------------------------------------------------------------------- */
+
+html.foa-js-motion .foa-site-header {
+	animation: foaFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
+}
+
+/* Masked display headline lines: padding keeps descenders inside clip box */
+.foa-line-wrap {
+	display: block;
+	overflow: hidden;
+	padding-bottom: 0.14em;
+	margin-bottom: -0.14em;
+}
+
+.foa-line-inner {
+	display: block;
+	will-change: transform;
+}
+
+html.foa-js-motion .foa-hero-enter h1:not(.foa-lines-ready):not(.foa-lines-fallback) {
+	opacity: 0;
+}
+
+html.foa-js-motion .foa-hero-enter h1.foa-lines-ready .foa-line-inner {
+	animation: foaLineUp 0.82s cubic-bezier(0.16, 1, 0.3, 1) var(--foa-line-delay, 0.12s) both;
+}
+
+/* Fallback if headline is not split into lines */
+html.foa-js-motion .foa-hero-enter h1.foa-lines-fallback {
+	animation: foaFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+/* Hero overline / pill badge */
+html.foa-js-motion .foa-hero-enter > .is-style-overline,
+html.foa-js-motion .foa-hero-enter > .is-style-pill {
+	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both;
+}
+
+/* Hero subtitle & bottom row */
+html.foa-js-motion .foa-hero-enter .is-style-lead {
+	animation: foaFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+}
+
+/* Hero CTA buttons */
+html.foa-js-motion .foa-hero-enter .wp-block-buttons {
+	animation: foaFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.56s both;
+}
+
+/* Centered hero proof strip */
+html.foa-js-motion .foa-hero-enter .foa-hero-proof {
+	animation: foaFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.68s both;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Scroll Reveal & Staggered Grids
+ * -------------------------------------------------------------------------- */
+
 html.foa-js-motion .foa-reveal {
 	opacity: 0;
-	transform: translateY(20px);
-	transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+	transform: translateY(24px);
+	transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: opacity, transform;
 }
 
 html.foa-js-motion .foa-reveal.is-visible {
 	opacity: 1;
 	transform: translateY(0);
+	will-change: auto;
 }
 
-/* Staggered grid reveals */
-html.foa-js-motion .foa-reveal-stagger > * {
+html.foa-js-motion .foa-reveal-left {
 	opacity: 0;
-	transform: translateY(18px);
-	transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+	transform: translateX(-22px);
+	transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html.foa-js-motion .foa-reveal-stagger.is-visible > * {
+html.foa-js-motion .foa-reveal-right {
+	opacity: 0;
+	transform: translateX(22px);
+	transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.foa-js-motion .foa-reveal-left.is-visible,
+html.foa-js-motion .foa-reveal-right.is-visible {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+/* Staggered grid children (columns & blog query grids) */
+html.foa-js-motion .foa-reveal-stagger:not(.wp-block-query) > *,
+html.foa-js-motion .foa-reveal-stagger.wp-block-query .wp-block-post-template > * {
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.foa-js-motion .foa-reveal-stagger.is-visible:not(.wp-block-query) > *,
+html.foa-js-motion .foa-reveal-stagger.is-visible.wp-block-query .wp-block-post-template > * {
 	opacity: 1;
 	transform: translateY(0);
 }
 
-html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(1) {
+html.foa-js-motion .foa-reveal-stagger.is-visible:not(.wp-block-query) > *:nth-child(1),
+html.foa-js-motion .foa-reveal-stagger.is-visible.wp-block-query .wp-block-post-template > *:nth-child(1) {
 	transition-delay: 0s;
 }
 
-html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(2) {
+html.foa-js-motion .foa-reveal-stagger.is-visible:not(.wp-block-query) > *:nth-child(2),
+html.foa-js-motion .foa-reveal-stagger.is-visible.wp-block-query .wp-block-post-template > *:nth-child(2) {
 	transition-delay: 0.08s;
 }
 
-html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(3) {
+html.foa-js-motion .foa-reveal-stagger.is-visible:not(.wp-block-query) > *:nth-child(3),
+html.foa-js-motion .foa-reveal-stagger.is-visible.wp-block-query .wp-block-post-template > *:nth-child(3) {
 	transition-delay: 0.16s;
 }
 
-html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(4) {
+html.foa-js-motion .foa-reveal-stagger.is-visible:not(.wp-block-query) > *:nth-child(4),
+html.foa-js-motion .foa-reveal-stagger.is-visible.wp-block-query .wp-block-post-template > *:nth-child(4) {
 	transition-delay: 0.24s;
 }
 
-html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(5) {
+html.foa-js-motion .foa-reveal-stagger.is-visible:not(.wp-block-query) > *:nth-child(5),
+html.foa-js-motion .foa-reveal-stagger.is-visible.wp-block-query .wp-block-post-template > *:nth-child(5) {
 	transition-delay: 0.32s;
 }
 
-/* Hero load entrance */
-html.foa-js-motion .foa-hero-enter > *:nth-child(1) {
-	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+/* --------------------------------------------------------------------------
+ * 4. Button Shimmer Sweep, Lift & Press States
+ * -------------------------------------------------------------------------- */
+
+.wp-block-button__link,
+.wp-element-button {
+	position: relative;
+	overflow: hidden;
 }
 
-html.foa-js-motion .foa-hero-enter > *:nth-child(2) {
-	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
+.wp-block-button:not(.is-style-ghost):not(.is-style-outline) .wp-block-button__link::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -70%;
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+	transform: skewX(-15deg);
+	pointer-events: none;
 }
 
-html.foa-js-motion .foa-hero-enter > *:nth-child(3) {
-	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
-}
-
-html.foa-js-motion .foa-hero-enter > *:nth-child(4) {
-	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both;
-}
-
-/* Subtle card hover lift on pointer devices */
 @media (hover: hover) {
+	.wp-block-button:not(.is-style-ghost):not(.is-style-outline) .wp-block-button__link:hover::after {
+		animation: foaShimmer 0.55s ease;
+	}
+
+	.wp-block-button:not(.is-style-ghost):not(.is-style-outline) .wp-block-button__link:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+	}
+
 	.wp-block-group.is-style-card:hover,
 	.foa-blog-grid .wp-block-post:hover {
 		transform: translateY(-2px);
 		box-shadow: var(--foa-shadow-hover);
 	}
+
+	.foa-dark-card:hover {
+		transform: translateY(-2px);
+	}
 }
 
-/* Respect OS reduced motion & explicit theme opt-out */
+.wp-block-button__link:active,
+.wp-element-button:active {
+	transform: scale(0.98) !important;
+	box-shadow: none !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 5. Smooth FAQ Accordion Body Transition
+ * -------------------------------------------------------------------------- */
+
+.wp-block-details.is-style-clean-accordion {
+	overflow: hidden;
+}
+
+.wp-block-details.is-style-clean-accordion summary::after {
+	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color var(--foa-transition);
+}
+
+/* --------------------------------------------------------------------------
+ * 6. Ambient Cursor Glow (fine-pointer desktop only, GPU-composited)
+ * -------------------------------------------------------------------------- */
+
+.foa-cursor-glow {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 480px;
+	height: 480px;
+	margin-top: -240px;
+	margin-left: -240px;
+	border-radius: 50%;
+	background: radial-gradient(circle at center, rgba(15, 14, 12, 0.032) 0%, transparent 65%);
+	pointer-events: none;
+	z-index: 1;
+	opacity: 0;
+	transform: translate3d(-999px, -999px, 0);
+	transition: opacity 0.3s ease;
+	will-change: transform;
+}
+
+:root[data-foa-theme="dark"] .foa-cursor-glow,
+:root[data-theme$="-dark"] .foa-cursor-glow,
+:root[data-foa-variation-scheme="dark"]:not([data-foa-theme="light"]) .foa-cursor-glow {
+	background: radial-gradient(circle at center, rgba(255, 255, 255, 0.035) 0%, transparent 65%);
+}
+
+/* --------------------------------------------------------------------------
+ * 7. Accessibility & Opt-Out Safeguards
+ * -------------------------------------------------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
+	html.foa-js-motion .foa-site-header,
+	html.foa-js-motion .foa-hero-enter h1,
+	html.foa-js-motion .foa-hero-enter .foa-line-inner,
+	html.foa-js-motion .foa-hero-enter > *,
+	html.foa-js-motion .foa-hero-enter .is-style-lead,
+	html.foa-js-motion .foa-hero-enter .wp-block-buttons,
+	html.foa-js-motion .foa-hero-enter .foa-hero-proof,
 	html.foa-js-motion .foa-reveal,
+	html.foa-js-motion .foa-reveal-left,
+	html.foa-js-motion .foa-reveal-right,
 	html.foa-js-motion .foa-reveal-stagger > *,
-	html.foa-js-motion .foa-hero-enter > * {
+	html.foa-js-motion .foa-reveal-stagger .wp-block-post-template > * {
 		opacity: 1 !important;
 		transform: none !important;
 		animation: none !important;
 		transition: none !important;
 	}
+
+	.foa-cursor-glow {
+		display: none !important;
+	}
 }
 
+:root[data-foa-motion="off"] .foa-site-header,
+:root[data-foa-motion="off"] .foa-hero-enter h1,
+:root[data-foa-motion="off"] .foa-hero-enter .foa-line-inner,
+:root[data-foa-motion="off"] .foa-hero-enter > *,
 :root[data-foa-motion="off"] .foa-reveal,
+:root[data-foa-motion="off"] .foa-reveal-left,
+:root[data-foa-motion="off"] .foa-reveal-right,
 :root[data-foa-motion="off"] .foa-reveal-stagger > *,
-:root[data-foa-motion="off"] .foa-hero-enter > * {
+:root[data-foa-motion="off"] .foa-reveal-stagger .wp-block-post-template > * {
 	opacity: 1 !important;
 	transform: none !important;
 	animation: none !important;
 	transition: none !important;
+}
+
+:root[data-foa-motion="off"] .foa-cursor-glow {
+	display: none !important;
 }

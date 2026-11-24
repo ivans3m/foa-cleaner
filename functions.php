@@ -90,6 +90,8 @@ function foa_cleaner_early_head_script(): void {
 
 	if ( ! $motion_enabled ) {
 		$lines[] = 'root.setAttribute("data-foa-motion","off");';
+	} else {
+		$lines[] = 'if(!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)){root.classList.add("foa-js-motion");}';
 	}
 
 	if ( $variation_is_dark ) {

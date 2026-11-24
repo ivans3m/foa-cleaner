@@ -14,10 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<!-- wp:group {"align":"full","className":"foa-reveal","style":{"spacing":{"padding":{"top":"var:preset|spacing|md","right":"var:preset|spacing|md","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|md"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull foa-reveal" style="padding-top:var(--wp--preset--spacing--md);padding-right:var(--wp--preset--spacing--md);padding-bottom:var(--wp--preset--spacing--xl);padding-left:var(--wp--preset--spacing--md)">
-	<!-- wp:columns {"align":"wide","className":"is-style-hairline-grid"} -->
-	<div class="wp-block-columns alignwide is-style-hairline-grid">
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|md","right":"var:preset|spacing|md","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|md"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--md);padding-right:var(--wp--preset--spacing--md);padding-bottom:var(--wp--preset--spacing--xl);padding-left:var(--wp--preset--spacing--md)">
+	<!-- wp:columns {"align":"wide","className":"is-style-hairline-grid foa-reveal-stagger"} -->
+	<div class="wp-block-columns alignwide is-style-hairline-grid foa-reveal-stagger">
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:paragraph {"className":"foa-spec-key"} -->

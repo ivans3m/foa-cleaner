@@ -182,6 +182,32 @@ a {
 	color: var(--foa-text);
 }
 
+/* Editorial Quote & Pullquote Attribution */
+.wp-block-pullquote cite,
+.wp-block-quote cite {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: var(--wp--preset--spacing--md);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	font-style: normal;
+	letter-spacing: 0.08em;
+	line-height: 1.5;
+	text-transform: uppercase;
+	color: var(--foa-text-muted);
+}
+
+.wp-block-pullquote cite::before {
+	content: "";
+	display: inline-block;
+	width: 2rem;
+	height: 1px;
+	flex-shrink: 0;
+	background-color: var(--foa-text-muted);
+}
+
 /* Form inputs */
 input[type="text"],
 input[type="email"],

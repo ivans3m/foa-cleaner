@@ -44,6 +44,31 @@
 	color: var(--foa-text);
 }
 
+.editor-styles-wrapper .wp-block-pullquote cite,
+.editor-styles-wrapper .wp-block-quote cite {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: var(--wp--preset--spacing--md);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	font-style: normal;
+	letter-spacing: 0.08em;
+	line-height: 1.5;
+	text-transform: uppercase;
+	color: var(--foa-text-muted);
+}
+
+.editor-styles-wrapper .wp-block-pullquote cite::before {
+	content: "";
+	display: inline-block;
+	width: 2rem;
+	height: 1px;
+	flex-shrink: 0;
+	background-color: var(--foa-text-muted);
+}
+
 /* Button Block Styles */
 .editor-styles-wrapper .wp-block-button.is-style-accent .wp-block-button__link {
 	background-color: var(--foa-accent-solid);
