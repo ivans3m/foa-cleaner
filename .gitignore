@@ -1,0 +1,25 @@
+# Local development & documentation (never pushed to GitHub — only theme files are public)
+/docs/
+/references/
+/scripts/
+/TODO.md
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.cursor/
+*.swp
+*.swo
+
+# Build & dev dependencies (if introduced during development)
+/node_modules/
+/vendor/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+.env
+.env.*
+*.log
+*.zip
