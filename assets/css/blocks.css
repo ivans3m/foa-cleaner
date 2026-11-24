@@ -554,3 +554,88 @@ body.admin-bar .foa-site-header {
 .foa-footer-meta a:hover {
 	color: var(--foa-text);
 }
+
+/* --------------------------------------------------------------------------
+ * 9. Copy-to-Clipboard Button on core/code
+ * -------------------------------------------------------------------------- */
+
+pre.wp-block-code.foa-has-copy-btn {
+	position: relative;
+	padding-top: 2.75rem;
+}
+
+.foa-copy-code-btn {
+	position: absolute;
+	top: 0.625rem;
+	right: 0.625rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding: 0.25rem 0.625rem;
+	border: 1px solid var(--foa-border);
+	border-radius: 6px;
+	background-color: var(--foa-bg);
+	color: var(--foa-text-secondary);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.75rem;
+	line-height: 1.4;
+	cursor: pointer;
+	transition: border-color var(--foa-transition), color var(--foa-transition), background-color var(--foa-transition);
+}
+
+.foa-copy-code-btn:hover {
+	border-color: var(--foa-border-strong);
+	color: var(--foa-text);
+}
+
+.foa-copy-code-btn.is-copied {
+	border-color: var(--foa-accent);
+	color: var(--foa-accent);
+}
+
+/* --------------------------------------------------------------------------
+ * 10. Post Format Cards in Blog Streams (Aside, Quote, Link, Status)
+ * -------------------------------------------------------------------------- */
+
+.foa-post-stream .wp-block-post.foa-format-card {
+	border-bottom: none;
+	margin-block: var(--wp--preset--spacing--md);
+	padding: var(--wp--preset--spacing--lg);
+	border: 1px solid var(--foa-border);
+	border-radius: var(--foa-radius-card);
+	background-color: var(--foa-surface);
+}
+
+.foa-post-stream .wp-block-post.foa-format-aside {
+	border-left: 3px solid var(--foa-border-strong);
+}
+
+.foa-post-stream .wp-block-post.foa-format-quote {
+	border-left: 3px solid var(--foa-accent);
+}
+
+.foa-post-stream .wp-block-post.foa-format-quote .wp-block-post-title {
+	font-style: italic;
+}
+
+.foa-post-stream .wp-block-post.foa-format-link {
+	background-color: var(--foa-bg);
+	box-shadow: var(--foa-shadow-card);
+}
+
+.foa-post-stream .wp-block-post.foa-format-link .wp-block-post-title a::after {
+	content: " ↗";
+	color: var(--foa-accent);
+	font-weight: 400;
+}
+
+.foa-post-stream .wp-block-post.foa-format-status {
+	padding: var(--wp--preset--spacing--md) var(--wp--preset--spacing--lg);
+}
+
+.foa-post-stream .wp-block-post.foa-format-status .wp-block-post-title {
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--lg);
+	font-weight: 400;
+	line-height: 1.5;
+}

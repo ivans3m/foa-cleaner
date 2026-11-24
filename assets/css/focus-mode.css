@@ -1,0 +1,142 @@
+/*
+ * FoA Cleaner — Single-Post Focus Mode & 1px Reading Progress Bar
+ * Loaded conditionally only on single posts (is_singular( 'post' )).
+ */
+
+/* 1px top reading progress bar */
+.foa-reading-progress {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	z-index: 1000;
+	pointer-events: none;
+	background-color: transparent;
+}
+
+@media (prefers-contrast: more) {
+	.foa-reading-progress {
+		height: 2px;
+	}
+}
+
+body.admin-bar .foa-reading-progress {
+	top: 32px;
+}
+
+@media (max-width: 782px) {
+	body.admin-bar .foa-reading-progress {
+		top: 46px;
+	}
+}
+
+.foa-reading-progress__bar {
+	height: 100%;
+	width: 100%;
+	background-color: var(--foa-accent);
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform 0.08s linear;
+}
+
+/* Inline Focus Mode trigger button in article meta bar */
+.foa-focus-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding: 0.3125rem 0.6875rem;
+	border: 1px solid var(--foa-border);
+	border-radius: var(--foa-radius-pill);
+	background-color: transparent;
+	color: var(--foa-text-secondary);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	line-height: 1.4;
+	cursor: pointer;
+	transition: background-color var(--foa-transition), border-color var(--foa-transition), color var(--foa-transition);
+}
+
+.foa-focus-toggle:hover {
+	background-color: var(--foa-surface);
+	border-color: var(--foa-border-strong);
+	color: var(--foa-text);
+}
+
+.foa-focus-toggle .foa-icon {
+	width: 0.875rem;
+	height: 0.875rem;
+}
+
+.foa-focus-toggle .foa-icon-minimize-2 {
+	display: none;
+}
+
+/* Floating exit pill (shown only when Focus Mode is active) */
+.foa-focus-exit {
+	position: fixed;
+	bottom: 1.5rem;
+	right: 1.5rem;
+	z-index: 950;
+	display: none;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5625rem 1rem;
+	border: 1px solid var(--foa-border-strong);
+	border-radius: var(--foa-radius-pill);
+	background-color: var(--foa-bg);
+	color: var(--foa-text);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	box-shadow: var(--foa-shadow-elevated);
+	cursor: pointer;
+	transition: transform var(--foa-transition), border-color var(--foa-transition), background-color var(--foa-transition);
+}
+
+.foa-focus-exit:hover {
+	background-color: var(--foa-surface);
+}
+
+.foa-focus-exit:active {
+	transform: scale(0.97);
+}
+
+/* Active Focus Mode state */
+:root[data-foa-focus="on"] .foa-site-header,
+:root[data-foa-focus="on"] .foa-site-footer,
+:root[data-foa-focus="on"] .foa-author-box,
+:root[data-foa-focus="on"] .foa-post-nav,
+:root[data-foa-focus="on"] .foa-comments-section {
+	display: none;
+}
+
+:root[data-foa-focus="on"] .foa-site-main {
+	padding-top: var(--wp--preset--spacing--2-xl) !important;
+	padding-bottom: var(--wp--preset--spacing--4-xl) !important;
+}
+
+:root[data-foa-focus="on"] .foa-focus-toggle .foa-icon-maximize-2 {
+	display: none;
+}
+
+:root[data-foa-focus="on"] .foa-focus-toggle .foa-icon-minimize-2 {
+	display: inline-block;
+}
+
+:root[data-foa-focus="on"] .foa-focus-toggle {
+	border-color: var(--foa-accent);
+	color: var(--foa-accent);
+}
+
+:root[data-foa-focus="on"] .foa-focus-exit {
+	display: inline-flex;
+}
+
+@media print {
+	.foa-reading-progress,
+	.foa-focus-toggle,
+	.foa-focus-exit {
+		display: none !important;
+	}
+}

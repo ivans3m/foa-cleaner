@@ -1,0 +1,226 @@
+/*
+ * FoA Cleaner — Clean Design Section Patterns Stylesheet
+ * Loaded on both frontend and Site/Block Editor.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. Hero Sections
+ * -------------------------------------------------------------------------- */
+
+.foa-hero-display-title {
+	line-height: 0.96;
+	letter-spacing: -0.045em;
+}
+
+.foa-hero-centered-inner {
+	max-width: 52rem;
+	margin-inline: auto;
+}
+
+.foa-hero-proof {
+	border-top: 1px solid var(--foa-border);
+	padding-top: var(--wp--preset--spacing--md);
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Spec Strip & Metric Stats
+ * -------------------------------------------------------------------------- */
+
+.foa-spec-key {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--foa-text-muted);
+	margin: 0;
+}
+
+.foa-spec-value {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--lg);
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	color: var(--foa-text);
+	margin: 0;
+}
+
+.foa-stat-number {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: clamp(2.75rem, 5vw, 4.25rem);
+	font-weight: 600;
+	letter-spacing: -0.04em;
+	line-height: 1;
+	color: var(--foa-text);
+	margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Dark Principles Band Cards
+ * -------------------------------------------------------------------------- */
+
+.foa-dark-card {
+	background-color: rgba(255, 255, 255, 0.03);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: var(--foa-radius-card);
+	padding: var(--wp--preset--spacing--lg);
+	transition: border-color var(--foa-transition), background-color var(--foa-transition);
+}
+
+.foa-dark-card:hover {
+	border-color: rgba(255, 255, 255, 0.24);
+	background-color: rgba(255, 255, 255, 0.05);
+}
+
+.foa-step-index {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.08em;
+	color: #A8A49F;
+	margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. Feature Cards & Inline Lucide Icons
+ * -------------------------------------------------------------------------- */
+
+.foa-feature-icon-wrap {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--foa-text);
+	margin-bottom: 0.25rem;
+}
+
+.foa-feature-icon-wrap .foa-icon {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+ * 5. Portfolio & Case Study Grid
+ * -------------------------------------------------------------------------- */
+
+.foa-portfolio-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--sm);
+}
+
+.foa-portfolio-media {
+	overflow: hidden;
+	border-radius: var(--foa-radius-card);
+	border: 1px solid var(--foa-border);
+	background-color: var(--foa-surface);
+	aspect-ratio: 16 / 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.foa-portfolio-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.35s ease;
+}
+
+.foa-portfolio-card:hover .foa-portfolio-media img {
+	transform: scale(1.02);
+}
+
+.foa-portfolio-card h3 a {
+	color: var(--foa-text);
+	text-decoration: none;
+}
+
+.foa-portfolio-card h3 a:hover {
+	color: var(--foa-accent);
+}
+
+.foa-portfolio-placeholder {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--foa-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+ * 6. Pricing Table
+ * -------------------------------------------------------------------------- */
+
+.foa-pricing-card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.foa-pricing-featured {
+	border-color: var(--foa-accent) !important;
+	box-shadow: var(--foa-shadow-elevated);
+}
+
+.foa-pricing-amount {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: clamp(2.25rem, 3.5vw, 3rem);
+	font-weight: 600;
+	letter-spacing: -0.04em;
+	line-height: 1.05;
+	color: var(--foa-text);
+}
+
+.foa-pricing-badge {
+	background-color: color-mix(in srgb, var(--foa-accent) 12%, var(--foa-bg)) !important;
+	border-color: color-mix(in srgb, var(--foa-accent) 30%, var(--foa-border)) !important;
+	color: var(--foa-accent) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 7. Testimonials & Blog Grid
+ * -------------------------------------------------------------------------- */
+
+.foa-testimonial-quote {
+	font-size: var(--wp--preset--font-size--base);
+	line-height: 1.6;
+	color: var(--foa-text);
+}
+
+.foa-testimonial-author {
+	padding-top: var(--wp--preset--spacing--sm);
+	border-top: 1px solid var(--foa-border);
+}
+
+.foa-blog-grid .wp-block-post {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: var(--foa-bg);
+	border: 1px solid var(--foa-border);
+	border-radius: var(--foa-radius-card);
+	padding: var(--wp--preset--spacing--md);
+	box-shadow: var(--foa-shadow-card);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.foa-blog-grid .wp-block-post:hover {
+	border-color: var(--foa-border-strong);
+	box-shadow: var(--foa-shadow-hover);
+}
+
+.foa-blog-grid .wp-block-post-featured-image {
+	margin-bottom: var(--wp--preset--spacing--sm);
+	overflow: hidden;
+	border-radius: 8px;
+}
+
+/* --------------------------------------------------------------------------
+ * 8. Responsive Section Refinements
+ * -------------------------------------------------------------------------- */
+
+@media (max-width: 781px) {
+	.foa-hero-display-title {
+		letter-spacing: -0.035em;
+	}
+}

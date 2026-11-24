@@ -1,0 +1,109 @@
+/*
+ * FoA Cleaner — Subtle Clean Design Micro-Animations
+ *
+ * Loaded only when micro-animations are enabled in Appearance → FoA Cleaner
+ * (or via foa_cleaner_enable_motion filter). Progressive-enhanced: elements
+ * only start hidden when html.foa-js-motion is set by reveal.js.
+ */
+
+@keyframes foaFadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(18px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Scroll-reveal elements (hidden only once reveal.js signals readiness) */
+html.foa-js-motion .foa-reveal {
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.foa-js-motion .foa-reveal.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* Staggered grid reveals */
+html.foa-js-motion .foa-reveal-stagger > * {
+	opacity: 0;
+	transform: translateY(18px);
+	transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.foa-js-motion .foa-reveal-stagger.is-visible > * {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(1) {
+	transition-delay: 0s;
+}
+
+html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(2) {
+	transition-delay: 0.08s;
+}
+
+html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(3) {
+	transition-delay: 0.16s;
+}
+
+html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(4) {
+	transition-delay: 0.24s;
+}
+
+html.foa-js-motion .foa-reveal-stagger.is-visible > *:nth-child(5) {
+	transition-delay: 0.32s;
+}
+
+/* Hero load entrance */
+html.foa-js-motion .foa-hero-enter > *:nth-child(1) {
+	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+html.foa-js-motion .foa-hero-enter > *:nth-child(2) {
+	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
+}
+
+html.foa-js-motion .foa-hero-enter > *:nth-child(3) {
+	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+
+html.foa-js-motion .foa-hero-enter > *:nth-child(4) {
+	animation: foaFadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both;
+}
+
+/* Subtle card hover lift on pointer devices */
+@media (hover: hover) {
+	.wp-block-group.is-style-card:hover,
+	.foa-blog-grid .wp-block-post:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--foa-shadow-hover);
+	}
+}
+
+/* Respect OS reduced motion & explicit theme opt-out */
+@media (prefers-reduced-motion: reduce) {
+	html.foa-js-motion .foa-reveal,
+	html.foa-js-motion .foa-reveal-stagger > *,
+	html.foa-js-motion .foa-hero-enter > * {
+		opacity: 1 !important;
+		transform: none !important;
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
+:root[data-foa-motion="off"] .foa-reveal,
+:root[data-foa-motion="off"] .foa-reveal-stagger > *,
+:root[data-foa-motion="off"] .foa-hero-enter > * {
+	opacity: 1 !important;
+	transform: none !important;
+	animation: none !important;
+	transition: none !important;
+}

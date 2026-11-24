@@ -78,6 +78,8 @@ function foa_cleaner_enqueue_reading_assets(): void {
 					array(
 						'enterFocus' => __( 'Enter focus mode', 'foa-cleaner' ),
 						'exitFocus'  => __( 'Exit focus mode', 'foa-cleaner' ),
+						'focusLabel' => __( 'Focus', 'foa-cleaner' ),
+						'exitLabel'  => __( 'Exit focus', 'foa-cleaner' ),
 					)
 				) . ';',
 				'before'
@@ -192,7 +194,45 @@ function foa_cleaner_render_yearly_archive(): string {
 }
 
 /**
- * Populate reading-time and yearly-archive slots inside rendered block HTML.
+ * Return the accessible single-post Focus Mode toggle button markup.
+ *
+ * @since 0.1.0
+ *
+ * @return string Button HTML markup, or empty string outside single posts.
+ */
+function foa_cleaner_focus_toggle_markup(): string {
+	if ( ! is_singular( 'post' ) ) {
+		return '';
+	}
+
+	return sprintf(
+		'<button type="button" class="foa-focus-toggle" data-foa-focus-toggle aria-pressed="false" aria-label="%1$s">%2$s%3$s<span class="foa-focus-toggle-text">%4$s</span></button>',
+		esc_attr__( 'Enter focus mode', 'foa-cleaner' ),
+		foa_cleaner_icon( 'maximize-2', array( 'width' => '14', 'height' => '14' ) ),
+		foa_cleaner_icon( 'minimize-2', array( 'width' => '14', 'height' => '14' ) ),
+		esc_html__( 'Focus', 'foa-cleaner' )
+	);
+}
+
+/**
+ * Print the 1px reading progress bar and Focus Mode exit pill on single posts.
+ *
+ * @since 0.1.0
+ */
+function foa_cleaner_single_post_reading_chrome(): void {
+	if ( ! is_singular( 'post' ) ) {
+		return;
+	}
+
+	echo '<div class="foa-reading-progress" aria-hidden="true"><div class="foa-reading-progress__bar"></div></div>';
+	echo '<button type="button" class="foa-focus-exit" data-foa-focus-exit aria-label="' . esc_attr__( 'Exit focus mode', 'foa-cleaner' ) . '">'
+		. foa_cleaner_icon( 'minimize-2', array( 'width' => '14', 'height' => '14' ) ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped SVG helper.
+		. '<span>' . esc_html__( 'Exit focus', 'foa-cleaner' ) . '</span></button>';
+}
+add_action( 'wp_body_open', 'foa_cleaner_single_post_reading_chrome' );
+
+/**
+ * Populate reading-time, focus-toggle, and yearly-archive slots inside rendered block HTML.
  *
  * @since 0.1.0
  *
@@ -211,6 +251,16 @@ function foa_cleaner_render_reading_slots( string $block_content ): string {
 					$minutes
 				);
 				return '<span class="foa-reading-time">' . esc_html( $label ) . '</span>';
+			},
+			$block_content
+		);
+	}
+
+	if ( false !== strpos( $block_content, 'data-foa-focus-toggle-slot' ) ) {
+		$block_content = (string) preg_replace_callback(
+			'/<span\s+data-foa-focus-toggle-slot(?:="")?\s*><\/span>/',
+			static function (): string {
+				return foa_cleaner_focus_toggle_markup();
 			},
 			$block_content
 		);

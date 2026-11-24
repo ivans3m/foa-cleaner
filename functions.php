@@ -63,6 +63,7 @@ function foa_cleaner_setup(): void {
 		array(
 			'editor-style.css',
 			'assets/css/blocks.css',
+			'assets/css/patterns.css',
 		)
 	);
 }
