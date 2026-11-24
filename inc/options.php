@@ -218,6 +218,9 @@ function foa_cleaner_maybe_flush_portfolio_rewrites( $old_value, $new_value ): v
 	$is_enabled  = is_array( $new_value ) && ! empty( $new_value['enable_jetpack_portfolio'] );
 
 	if ( $was_enabled !== $is_enabled ) {
+		if ( $is_enabled && ( defined( 'JETPACK__VERSION' ) || class_exists( 'Automattic\Jetpack\Classic_Theme_Helper\Jetpack_Portfolio' ) ) ) {
+			update_option( 'jetpack_portfolio', '1' );
+		}
 		set_transient( 'foa_cleaner_flush_rewrites', 1, MINUTE_IN_SECONDS );
 	}
 }
