@@ -78,9 +78,10 @@ add_action( 'after_setup_theme', 'foa_cleaner_setup' );
  * @since 0.1.0
  */
 function foa_cleaner_early_head_script(): void {
-	$vibetiles_active = foa_cleaner_vibetiles_active();
-	$default_mode     = foa_cleaner_get_default_color_mode();
-	$motion_enabled   = foa_cleaner_is_motion_enabled();
+	$vibetiles_active  = foa_cleaner_vibetiles_active();
+	$default_mode      = foa_cleaner_get_default_color_mode();
+	$motion_enabled    = foa_cleaner_is_motion_enabled();
+	$variation_is_dark = foa_cleaner_active_variation_is_dark();
 
 	$lines = array(
 		'(function(){',
@@ -89,6 +90,10 @@ function foa_cleaner_early_head_script(): void {
 
 	if ( ! $motion_enabled ) {
 		$lines[] = 'root.setAttribute("data-foa-motion","off");';
+	}
+
+	if ( $variation_is_dark ) {
+		$lines[] = 'root.setAttribute("data-foa-variation-scheme","dark");';
 	}
 
 	if ( ! $vibetiles_active ) {

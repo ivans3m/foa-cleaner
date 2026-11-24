@@ -14,8 +14,8 @@
 	--foa-border-strong: var(--wp--preset--color--border-strong, #D7D4CD);
 	--foa-accent: var(--wp--preset--color--foa-blue, #2E70FF);
 	--foa-accent-hover: var(--wp--preset--color--foa-blue-hover, #1D5CE6);
-	--foa-accent-solid: #2E70FF;
-	--foa-accent-solid-hover: #1D5CE6;
+	--foa-accent-solid: var(--wp--preset--color--foa-blue, #2E70FF);
+	--foa-accent-solid-hover: var(--wp--preset--color--foa-blue-hover, #1D5CE6);
 	--foa-accent-text: #FFFFFF;
 	--foa-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
 	--foa-shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.09);

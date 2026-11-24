@@ -49,18 +49,78 @@ function foa_cleaner_get_options(): array {
 }
 
 /**
+ * Detect whether the active Global Style Variation has a dark canvas background
+ * (e.g. Midnight Slate).
+ *
+ * @since 0.1.0
+ *
+ * @return bool True when the active global canvas luminance is dark (< 0.35).
+ */
+function foa_cleaner_active_variation_is_dark(): bool {
+	if ( ! function_exists( 'wp_get_global_styles' ) || ! function_exists( 'wp_get_global_settings' ) ) {
+		return false;
+	}
+
+	$styles = (array) wp_get_global_styles( array( 'color' ) );
+	$bg     = isset( $styles['background'] ) ? trim( (string) $styles['background'] ) : '';
+
+	if ( '' === $bg ) {
+		return false;
+	}
+
+	if ( preg_match( '/^var\(--wp--preset--color--([a-z0-9-]+)\)$/i', $bg, $match ) || preg_match( '/^var:preset\|color\|([a-z0-9-]+)$/i', $bg, $match ) ) {
+		$slug = $match[1];
+		$sets = (array) wp_get_global_settings( array( 'color', 'palette' ) );
+		foreach ( array( 'custom', 'theme' ) as $origin ) {
+			if ( empty( $sets[ $origin ] ) || ! is_array( $sets[ $origin ] ) ) {
+				continue;
+			}
+			foreach ( $sets[ $origin ] as $entry ) {
+				if ( isset( $entry['slug'], $entry['color'] ) && $entry['slug'] === $slug ) {
+					$bg = trim( (string) $entry['color'] );
+					break 2;
+				}
+			}
+		}
+	}
+
+	if ( ! preg_match( '/^#([0-9a-f]{3}|[0-9a-f]{6})$/i', $bg, $hex ) ) {
+		return false;
+	}
+
+	$raw = $hex[1];
+	if ( 3 === strlen( $raw ) ) {
+		$raw = $raw[0] . $raw[0] . $raw[1] . $raw[1] . $raw[2] . $raw[2];
+	}
+
+	$r = hexdec( substr( $raw, 0, 2 ) ) / 255;
+	$g = hexdec( substr( $raw, 2, 2 ) ) / 255;
+	$b = hexdec( substr( $raw, 4, 2 ) ) / 255;
+
+	$luminance = ( 0.2126 * $r ) + ( 0.7152 * $g ) + ( 0.0722 * $b );
+
+	return $luminance < 0.35;
+}
+
+/**
  * Get the configured default color mode ('system', 'light', or 'dark').
+ *
+ * When a dark-first style variation (such as Midnight Slate) is active and the
+ * user has not explicitly saved a different option, defaults to 'dark'.
  *
  * @since 0.1.0
  *
  * @return string Validated mode string.
  */
 function foa_cleaner_get_default_color_mode(): string {
-	$options = foa_cleaner_get_options();
+	$saved   = get_option( FOA_CLEANER_OPTION_KEY, array() );
 	$allowed = array( 'system', 'light', 'dark' );
-	$mode    = in_array( $options['default_color_mode'], $allowed, true )
-		? $options['default_color_mode']
-		: 'light';
+
+	if ( is_array( $saved ) && isset( $saved['default_color_mode'] ) && in_array( $saved['default_color_mode'], $allowed, true ) ) {
+		$mode = $saved['default_color_mode'];
+	} else {
+		$mode = foa_cleaner_active_variation_is_dark() ? 'dark' : 'light';
+	}
 
 	/**
 	 * Filter the default color mode for visitors without a saved preference.
@@ -193,8 +253,7 @@ function foa_cleaner_render_general_section_intro(): void {
  * @since 0.1.0
  */
 function foa_cleaner_render_color_mode_field(): void {
-	$options = foa_cleaner_get_options();
-	$current = $options['default_color_mode'];
+	$current = foa_cleaner_get_default_color_mode();
 	$choices = array(
 		'light'  => __( 'Light (Clean Design default)', 'foa-cleaner' ),
 		'system' => __( 'System (follow visitor OS preference)', 'foa-cleaner' ),

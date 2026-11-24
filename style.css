@@ -33,8 +33,8 @@ Primary Branch: main
 	--foa-border-strong: var(--wp--preset--color--border-strong, #D7D4CD);
 	--foa-accent: var(--wp--preset--color--foa-blue, #2E70FF);
 	--foa-accent-hover: var(--wp--preset--color--foa-blue-hover, #1D5CE6);
-	--foa-accent-solid: #2E70FF;
-	--foa-accent-solid-hover: #1D5CE6;
+	--foa-accent-solid: var(--wp--preset--color--foa-blue, #2E70FF);
+	--foa-accent-solid-hover: var(--wp--preset--color--foa-blue-hover, #1D5CE6);
 	--foa-accent-text: #FFFFFF;
 	--foa-btn-primary-hover: color-mix(in srgb, var(--foa-text) 85%, var(--foa-bg));
 	--foa-focus-ring: color-mix(in srgb, var(--foa-accent) 45%, transparent);
@@ -50,11 +50,12 @@ Primary Branch: main
 }
 
 /* --------------------------------------------------------------------------
- * 2. Standalone Dark Mode
+ * 2. Standalone Dark Mode & Dark-First Style Variations
  *    Gated so Vibetiles owns color-scheme switching whenever it is active.
  * -------------------------------------------------------------------------- */
 
-:root[data-foa-theme="dark"]:not([data-theme]):not([data-chosen]):not([data-colours]) {
+/* Light-first variations toggled to Dark Mode */
+:root[data-foa-theme="dark"]:not([data-foa-variation-scheme="dark"]):not([data-theme]):not([data-chosen]):not([data-colours]) {
 	--wp--preset--color--base: #0F0E0C;
 	--wp--preset--color--surface: #171613;
 	--wp--preset--color--contrast: #F6F4EE;
@@ -75,18 +76,46 @@ Primary Branch: main
 	color-scheme: dark;
 }
 
-/* Elevated dark surface treatment for dark sections in dark mode (no bright flashes) */
-:root[data-foa-theme="dark"]:not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) {
+/* Dark-first variations (e.g. Midnight Slate) in their native dark mode */
+:root[data-foa-variation-scheme="dark"]:not([data-foa-theme="light"]):not([data-theme]):not([data-chosen]):not([data-colours]) {
+	--foa-surface-elevated: color-mix(in srgb, var(--foa-surface) 92%, #FFFFFF);
+	--foa-accent-solid: color-mix(in srgb, var(--foa-accent) 82%, #000000);
+	--foa-accent-solid-hover: color-mix(in srgb, var(--foa-accent) 68%, #000000);
+	--foa-btn-primary-hover: #FFFFFF;
+	--foa-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+	--foa-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.45);
+	--foa-shadow-elevated: 0 12px 34px rgba(0, 0, 0, 0.55);
+	color-scheme: dark;
+}
+
+/* Dark-first variations toggled to Light Mode by visitor */
+:root[data-foa-variation-scheme="dark"][data-foa-theme="light"]:not([data-theme]):not([data-chosen]):not([data-colours]) {
+	--wp--preset--color--base: #FFFFFF;
+	--wp--preset--color--surface: #F4F6FA;
+	--wp--preset--color--contrast: #0B0D11;
+	--wp--preset--color--contrast-secondary: #525B6B;
+	--wp--preset--color--contrast-muted: #7B8394;
+	--wp--preset--color--border: #E2E6EF;
+	--wp--preset--color--border-strong: #C9D0DF;
+	--wp--preset--color--surface-dark-text: #F4F6FA;
+	--wp--preset--color--foa-blue: #2E70FF;
+	--wp--preset--color--foa-blue-hover: #1D5CE6;
+	--foa-surface-elevated: #0B0D11;
+	color-scheme: light;
+}
+
+/* Elevated dark surface treatment for dark sections whenever dark mode or a dark-first variation is active */
+:root:is([data-foa-theme="dark"], [data-foa-variation-scheme="dark"]:not([data-foa-theme="light"])):not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) {
 	background-color: var(--foa-surface-elevated) !important;
 	color: var(--foa-text-invert);
 	border-color: var(--foa-border);
 }
 
-:root[data-foa-theme="dark"]:not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) :is(h1, h2, h3, h4, h5, h6) {
+:root:is([data-foa-theme="dark"], [data-foa-variation-scheme="dark"]:not([data-foa-theme="light"])):not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) :is(h1, h2, h3, h4, h5, h6) {
 	color: var(--foa-text-invert);
 }
 
-:root[data-foa-theme="dark"]:not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) .wp-block-button:not(.is-style-accent):not(.is-style-ghost):not(.is-style-outline) .wp-block-button__link:hover {
+:root:is([data-foa-theme="dark"], [data-foa-variation-scheme="dark"]:not([data-foa-theme="light"])):not([data-theme]):not([data-chosen]):not([data-colours]) :is(.has-contrast-background-color, .is-style-dark-band) .wp-block-button:not(.is-style-accent):not(.is-style-ghost):not(.is-style-outline) .wp-block-button__link:hover {
 	background-color: var(--foa-btn-primary-hover);
 	color: #0F0E0C;
 }

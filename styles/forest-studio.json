@@ -1,0 +1,61 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Forest Studio",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#FBFBF9"
+				},
+				{
+					"slug": "surface",
+					"name": "Surface",
+					"color": "#F1F3EE"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#121A17"
+				},
+				{
+					"slug": "contrast-secondary",
+					"name": "Secondary Text",
+					"color": "#515E58"
+				},
+				{
+					"slug": "contrast-muted",
+					"name": "Muted Text",
+					"color": "#85918B"
+				},
+				{
+					"slug": "border",
+					"name": "Border",
+					"color": "#E0E5DF"
+				},
+				{
+					"slug": "border-strong",
+					"name": "Border Strong",
+					"color": "#C7D0C6"
+				},
+				{
+					"slug": "surface-dark-text",
+					"name": "Light on Dark",
+					"color": "#F5F7F4"
+				},
+				{
+					"slug": "foa-blue",
+					"name": "Pine Accent",
+					"color": "#1B4D3E"
+				},
+				{
+					"slug": "foa-blue-hover",
+					"name": "Pine Hover",
+					"color": "#12362B"
+				}
+			]
+		}
+	}
+}

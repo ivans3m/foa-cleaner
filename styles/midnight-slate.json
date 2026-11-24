@@ -1,0 +1,67 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Midnight Slate",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#0B0D11"
+				},
+				{
+					"slug": "surface",
+					"name": "Surface",
+					"color": "#13161D"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#F4F6FA"
+				},
+				{
+					"slug": "contrast-secondary",
+					"name": "Secondary Text",
+					"color": "#A1A8B8"
+				},
+				{
+					"slug": "contrast-muted",
+					"name": "Muted Text",
+					"color": "#7B8394"
+				},
+				{
+					"slug": "border",
+					"name": "Border",
+					"color": "#222733"
+				},
+				{
+					"slug": "border-strong",
+					"name": "Border Strong",
+					"color": "#333A4B"
+				},
+				{
+					"slug": "surface-dark-text",
+					"name": "Light on Dark",
+					"color": "#F4F6FA"
+				},
+				{
+					"slug": "foa-blue",
+					"name": "Electric FoA Blue",
+					"color": "#4D86FF"
+				},
+				{
+					"slug": "foa-blue-hover",
+					"name": "Electric FoA Blue Hover",
+					"color": "#7AA5FF"
+				}
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var:preset|color|base",
+			"text": "var:preset|color|contrast"
+		}
+	}
+}

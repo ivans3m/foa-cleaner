@@ -1,0 +1,61 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Warm Paper",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#FAF8F4"
+				},
+				{
+					"slug": "surface",
+					"name": "Surface",
+					"color": "#F1EDE4"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#1A1714"
+				},
+				{
+					"slug": "contrast-secondary",
+					"name": "Secondary Text",
+					"color": "#615B52"
+				},
+				{
+					"slug": "contrast-muted",
+					"name": "Muted Text",
+					"color": "#968F84"
+				},
+				{
+					"slug": "border",
+					"name": "Border",
+					"color": "#E5DFD3"
+				},
+				{
+					"slug": "border-strong",
+					"name": "Border Strong",
+					"color": "#CFC7B8"
+				},
+				{
+					"slug": "surface-dark-text",
+					"name": "Light on Dark",
+					"color": "#FAF8F4"
+				},
+				{
+					"slug": "foa-blue",
+					"name": "Terracotta Accent",
+					"color": "#B84A27"
+				},
+				{
+					"slug": "foa-blue-hover",
+					"name": "Terracotta Hover",
+					"color": "#94381B"
+				}
+			]
+		}
+	}
+}

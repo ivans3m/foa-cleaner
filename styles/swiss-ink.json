@@ -1,0 +1,96 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Swiss Ink",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#FFFFFF"
+				},
+				{
+					"slug": "surface",
+					"name": "Surface",
+					"color": "#F5F5F3"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#0F0E0C"
+				},
+				{
+					"slug": "contrast-secondary",
+					"name": "Secondary Text",
+					"color": "#5C5A55"
+				},
+				{
+					"slug": "contrast-muted",
+					"name": "Muted Text",
+					"color": "#8F8C86"
+				},
+				{
+					"slug": "border",
+					"name": "Border",
+					"color": "#E5E5E0"
+				},
+				{
+					"slug": "border-strong",
+					"name": "Border Strong",
+					"color": "#CBCAC4"
+				},
+				{
+					"slug": "surface-dark-text",
+					"name": "Light on Dark",
+					"color": "#F7F7F5"
+				},
+				{
+					"slug": "foa-blue",
+					"name": "Swiss Ink Accent",
+					"color": "#0F0E0C"
+				},
+				{
+					"slug": "foa-blue-hover",
+					"name": "Swiss Ink Hover",
+					"color": "#383632"
+				}
+			]
+		},
+		"custom": {
+			"radius": {
+				"sm": "3px",
+				"control": "4px",
+				"card": "8px",
+				"lg": "10px",
+				"pill": "9999px"
+			}
+		}
+	},
+	"styles": {
+		"elements": {
+			"button": {
+				"border": {
+					"radius": "4px"
+				}
+			}
+		},
+		"blocks": {
+			"core/image": {
+				"border": {
+					"radius": "6px"
+				}
+			},
+			"core/code": {
+				"border": {
+					"radius": "4px"
+				}
+			},
+			"core/preformatted": {
+				"border": {
+					"radius": "4px"
+				}
+			}
+		}
+	}
+}
