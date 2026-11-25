@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<article class="wp-block-group">
 			<!-- wp:group {"className":"foa-post-meta-row","layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"center"}} -->
 			<div class="wp-block-group foa-post-meta-row">
-				<!-- wp:post-date /-->
+				<!-- wp:post-date {"isLink":true} /-->
 				<!-- wp:post-terms {"term":"category","separator":" / "} /-->
 			</div>
 			<!-- /wp:group -->

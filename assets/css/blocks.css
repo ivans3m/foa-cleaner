@@ -365,8 +365,174 @@ body.admin-bar .foa-site-header {
 	margin-top: 2.25em;
 }
 
+.foa-article-content::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.wp-block-post-title,
+.foa-article-content,
+.wp-block-comment-content {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+}
+
 .foa-article-content p {
 	color: var(--foa-text);
+}
+
+/* Classic HTML elements & Theme Unit Test edge cases */
+.foa-article-content dl {
+	margin-block: var(--wp--preset--spacing--md);
+}
+
+.foa-article-content dt {
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 600;
+	color: var(--foa-text);
+	margin-top: 1rem;
+}
+
+.foa-article-content dd {
+	margin-left: 0;
+	padding-left: var(--wp--preset--spacing--md);
+	border-left: 1px solid var(--foa-border);
+	color: var(--foa-text-secondary);
+	margin-top: 0.25rem;
+}
+
+.foa-article-content kbd {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.8125em;
+	padding: 0.15em 0.45em;
+	border: 1px solid var(--foa-border-strong);
+	border-bottom-width: 2px;
+	border-radius: 5px;
+	background-color: var(--foa-surface);
+	color: var(--foa-text);
+}
+
+.foa-article-content abbr[title] {
+	text-decoration: underline dotted var(--foa-border-strong);
+	text-underline-offset: 0.2em;
+	cursor: help;
+}
+
+.foa-article-content address {
+	font-style: normal;
+	padding-left: var(--wp--preset--spacing--md);
+	border-left: 2px solid var(--foa-border);
+	color: var(--foa-text-secondary);
+}
+
+.foa-article-content table {
+	width: 100%;
+	border-collapse: collapse;
+	border-top: 1px solid var(--foa-border);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+.foa-article-content table :is(th, td) {
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid var(--foa-border);
+	text-align: left;
+	vertical-align: top;
+}
+
+.foa-article-content table th {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--foa-text-muted);
+}
+
+.foa-article-content .wp-block-table {
+	overflow-x: auto;
+}
+
+/* Multi-page post pagination (<!--nextpage-->) */
+.post-nav-links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: var(--wp--preset--spacing--xl);
+	padding-top: var(--wp--preset--spacing--md);
+	border-top: 1px solid var(--foa-border);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	color: var(--foa-text-muted);
+}
+
+.post-nav-links .post-page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2rem;
+	height: 2rem;
+	padding: 0 0.5rem;
+	border-radius: var(--foa-radius-control);
+	border: 1px solid var(--foa-border);
+	color: var(--foa-text-secondary);
+	text-decoration: none;
+	transition: background-color var(--foa-transition), color var(--foa-transition), border-color var(--foa-transition);
+}
+
+.post-nav-links a.post-page-numbers:hover {
+	background-color: var(--foa-surface);
+	border-color: var(--foa-border-strong);
+	color: var(--foa-text);
+}
+
+.post-nav-links .post-page-numbers.current {
+	background-color: var(--foa-text);
+	border-color: var(--foa-text);
+	color: var(--foa-bg);
+}
+
+/* Password-protected post form */
+.post-password-form {
+	padding: var(--wp--preset--spacing--lg);
+	border: 1px solid var(--foa-border);
+	border-radius: var(--foa-radius-card);
+	background-color: var(--foa-surface);
+}
+
+.post-password-form > p:last-of-type {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0;
+}
+
+.post-password-form label {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: var(--wp--preset--font-size--sm);
+	color: var(--foa-text-secondary);
+}
+
+.post-password-form input[type="submit"] {
+	padding: 0.6875rem 1.25rem;
+	border: 1px solid transparent;
+	border-radius: var(--foa-radius-control);
+	background-color: var(--foa-text);
+	color: var(--foa-bg);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color var(--foa-transition), color var(--foa-transition);
+}
+
+.post-password-form input[type="submit"]:hover {
+	background-color: var(--foa-btn-primary-hover);
 }
 
 .foa-article-tags {
@@ -716,6 +882,15 @@ pre.wp-block-code.foa-has-copy-btn {
 /* --------------------------------------------------------------------------
  * 10. Post Format Cards in Blog Streams (Aside, Quote, Link, Status)
  * -------------------------------------------------------------------------- */
+
+.foa-post-stream .wp-block-post.sticky {
+	margin-block: var(--wp--preset--spacing--md);
+	padding: var(--wp--preset--spacing--lg);
+	border: 1px solid var(--foa-border);
+	border-left: 3px solid var(--foa-accent);
+	border-radius: var(--foa-radius-card);
+	background-color: var(--foa-surface);
+}
 
 .foa-post-stream .wp-block-post.foa-format-card {
 	border-bottom: none;

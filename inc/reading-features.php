@@ -329,3 +329,41 @@ function foa_cleaner_post_format_classes( array $classes, array $css_class, int 
 	return $classes;
 }
 add_filter( 'post_class', 'foa_cleaner_post_format_classes', 10, 3 );
+
+/**
+ * Append `wp_link_pages()` pagination links to `core/post-content` on
+ * multi-page singular posts and pages (`<!--nextpage-->`).
+ *
+ * Ensures WordPress Theme Unit Test Data paginated posts render accessible
+ * page links without duplicating core block markup.
+ *
+ * @since 1.1.0
+ *
+ * @param string $block_content Rendered `core/post-content` block HTML.
+ * @return string Block HTML with `.post-nav-links` appended when paginated.
+ */
+function foa_cleaner_append_post_link_pages( string $block_content ): string {
+	if ( is_admin() || ! is_singular() || get_the_ID() !== get_queried_object_id() ) {
+		return $block_content;
+	}
+
+	global $multipage;
+	if ( empty( $multipage ) ) {
+		return $block_content;
+	}
+
+	$links = wp_link_pages(
+		array(
+			'before' => '<nav class="post-nav-links" aria-label="' . esc_attr__( 'Page navigation', 'foa-cleaner' ) . '"><span class="post-nav-links-label">' . esc_html__( 'Pages:', 'foa-cleaner' ) . '</span>',
+			'after'  => '</nav>',
+			'echo'   => false,
+		)
+	);
+
+	if ( '' === $links ) {
+		return $block_content;
+	}
+
+	return $block_content . $links;
+}
+add_filter( 'render_block_core/post-content', 'foa_cleaner_append_post_link_pages', 10, 1 );
