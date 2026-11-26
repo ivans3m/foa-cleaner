@@ -21,7 +21,7 @@ define( 'FOA_CLEANER_OPTION_KEY', 'foa_cleaner_options' );
  *
  * @since 0.1.0
  *
- * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool}
+ * @return array{default_color_mode: string, enable_motion: bool, toc_mode: string, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool}
  */
 function foa_cleaner_option_defaults(): array {
 	return array(
@@ -38,7 +38,7 @@ function foa_cleaner_option_defaults(): array {
  *
  * @since 0.1.0
  *
- * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool}
+ * @return array{default_color_mode: string, enable_motion: bool, toc_mode: string, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool}
  */
 function foa_cleaner_get_options(): array {
 	$defaults = foa_cleaner_option_defaults();
@@ -250,7 +250,7 @@ function foa_cleaner_is_jetpack_markdown_enabled(): bool {
  * @since 0.1.0
  *
  * @param mixed $input Raw submitted form values.
- * @return array{default_color_mode: string, enable_motion: bool, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool} Sanitized option array.
+ * @return array{default_color_mode: string, enable_motion: bool, toc_mode: string, enable_jetpack_portfolio: bool, enable_jetpack_markdown: bool} Sanitized option array.
  */
 function foa_cleaner_sanitize_options( $input ): array {
 	$defaults       = foa_cleaner_option_defaults();

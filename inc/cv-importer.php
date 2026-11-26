@@ -524,7 +524,9 @@ function foa_cleaner_build_public_cv_markdown( array $parsed ): string {
 }
 
 /**
- * Store a validated, sanitized public `.md` CV file in the WordPress uploads directory.
+ * Store a validated, sanitized public `.md` CV file and register it in the
+ * WordPress Media Library (`text/markdown`) using a strictly scoped `upload_mimes`
+ * filter (never modifying global site upload rules).
  *
  * Called after `foa_cleaner_parse_cv_markdown()` succeeds so visitors and AI agents
  * can always download the sanitized Markdown CV (either via the subtle `Download CV.md`
@@ -579,7 +581,9 @@ function foa_cleaner_store_cv_markdown_file( array $parsed, string $filename ) {
 			'post_content'   => '',
 			'post_status'    => 'inherit',
 		),
-		(string) $uploaded['file']
+		(string) $uploaded['file'],
+		0,
+		true
 	);
 
 	if ( is_wp_error( $attachment_id ) ) {
@@ -770,15 +774,19 @@ function foa_cleaner_handle_cv_pdf_upload( array $file ) {
 
 	$attachment_id = wp_insert_attachment(
 		array(
+			'guid'           => (string) $uploaded['url'],
 			'post_mime_type' => 'application/pdf',
 			'post_title'     => sanitize_file_name( pathinfo( $uploaded['file'], PATHINFO_FILENAME ) ),
 			'post_content'   => '',
 			'post_status'    => 'inherit',
 		),
-		$uploaded['file']
+		$uploaded['file'],
+		0,
+		true
 	);
 
 	if ( is_wp_error( $attachment_id ) ) {
+		wp_delete_file( (string) $uploaded['file'] );
 		return $attachment_id;
 	}
 
@@ -1029,27 +1037,35 @@ function foa_cleaner_ajax_create_cv_page(): void {
 	$raw_slug  = isset( $_POST['cv_slug'] ) ? sanitize_title( wp_unslash( (string) $_POST['cv_slug'] ) ) : 'cv';
 	$page_slug = '' !== $raw_slug ? $raw_slug : 'cv';
 
-	// Always store a validated, sanitized public .md copy (with ## Facts stripped).
-	$md_base   = pathinfo( $md_name, PATHINFO_FILENAME );
-	$md_result = foa_cleaner_store_cv_markdown_file( $parsed, '' !== $md_base ? $md_base : $page_slug );
-	if ( is_wp_error( $md_result ) ) {
-		wp_send_json_error( array( 'message' => $md_result->get_error_message() ), 400 );
-	}
-
-	// Optional PDF upload: primary "Download PDF" button + tiny "Download CV.md" link beneath it.
-	// When omitted, the primary button itself is "Download CV.MD" with no second link.
-	$download_url     = $md_result;
-	$download_label   = __( 'Download CV.MD', 'foa-cleaner' );
-	$secondary_md_url = '';
+	// Validate and upload the optional companion PDF first so an invalid PDF
+	// never leaves an orphaned .md attachment behind in the Media Library.
+	$pdf_url = '';
 	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- validated in helper.
 	if ( isset( $_FILES['cv_pdf'] ) && is_array( $_FILES['cv_pdf'] ) && ! empty( $_FILES['cv_pdf']['name'] ) ) {
 		$pdf_result = foa_cleaner_handle_cv_pdf_upload( $_FILES['cv_pdf'] );
 		if ( is_wp_error( $pdf_result ) ) {
 			wp_send_json_error( array( 'message' => $pdf_result->get_error_message() ), 400 );
 		}
-		$download_url     = $pdf_result;
+		$pdf_url = $pdf_result;
+	}
+
+	// Always store a validated, sanitized public .md copy (with ## Facts stripped) in the Media Library.
+	$md_base   = pathinfo( $md_name, PATHINFO_FILENAME );
+	$md_result = foa_cleaner_store_cv_markdown_file( $parsed, '' !== $md_base ? $md_base : $page_slug );
+	if ( is_wp_error( $md_result ) ) {
+		wp_send_json_error( array( 'message' => $md_result->get_error_message() ), 400 );
+	}
+
+	// If a PDF was uploaded: primary "Download PDF" button + tiny "Download CV.md" link beneath it.
+	// When omitted, the primary button itself is "Download CV.MD" with no second link.
+	if ( '' !== $pdf_url ) {
+		$download_url     = $pdf_url;
 		$download_label   = __( 'Download PDF', 'foa-cleaner' );
 		$secondary_md_url = $md_result;
+	} else {
+		$download_url     = $md_result;
+		$download_label   = __( 'Download CV.MD', 'foa-cleaner' );
+		$secondary_md_url = '';
 	}
 
 	$page_title = ! empty( $parsed['meta']['name'] )
