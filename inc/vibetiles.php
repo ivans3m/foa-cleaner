@@ -134,6 +134,9 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 				'architrave'   => 3,
 				'label'        => 'Swiss Ink',
 				'base'         => 'host',
+				'face'         => 'host',
+				'reading'      => 'default',
+				'leading'      => 'default',
 				'radius'       => 'small',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
@@ -170,6 +173,9 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 				'architrave'   => 3,
 				'label'        => 'Warm Paper',
 				'base'         => 'host',
+				'face'         => 'host',
+				'reading'      => 'default',
+				'leading'      => 'default',
 				'radius'       => 'small',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
@@ -206,6 +212,9 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 				'architrave'   => 3,
 				'label'        => 'Midnight Slate',
 				'base'         => 'host',
+				'face'         => 'host',
+				'reading'      => 'default',
+				'leading'      => 'default',
 				'radius'       => 'small',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
@@ -242,6 +251,9 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 				'architrave'   => 3,
 				'label'        => 'Forest Studio',
 				'base'         => 'host',
+				'face'         => 'host',
+				'reading'      => 'default',
+				'leading'      => 'default',
 				'radius'       => 'medium',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
@@ -378,6 +390,56 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 	 * @param string $base_url Base URL used for preview links.
 	 */
 	return (array) apply_filters( 'foa_cleaner_vibetiles_curated_presets', $presets, $base );
+}
+
+/**
+ * Return a shareable Vibetiles Try Mode URL that explicitly restores FoA Cleaner's
+ * original Clean Design Light palette and host typography (`face: 'host'`).
+ *
+ * @since 1.1.0
+ *
+ * @param string $base_url Optional base URL (defaults to `home_url( '/' )`).
+ * @return string Try Mode URL carrying the Clean Light default record.
+ */
+function foa_cleaner_get_vibetiles_default_preview_url( string $base_url = '' ): string {
+	$base   = '' !== $base_url ? $base_url : home_url( '/' );
+	$try    = add_query_arg( 'ldp-try', '1', $base );
+	$record = array(
+		'architrave'   => 3,
+		'label'        => 'Clean Light',
+		'base'         => 'host',
+		'face'         => 'host',
+		'reading'      => 'default',
+		'leading'      => 'default',
+		'radius'       => 'small',
+		'borderWidth'  => 'hairline',
+		'buttonColour' => 'accent',
+		'colours'      => array(
+			'light' => array(
+				'background'  => '#FFFFFF',
+				'background2' => '#F7F6F2',
+				'card'        => '#F7F6F2',
+				'text'        => '#0F0E0C',
+				'mutedText'   => '#6B6760',
+				'accent'      => '#2E70FF',
+				'highlight'   => '#E8E6E1',
+				'button'      => '#0F0E0C',
+			),
+			'dark'  => array(
+				'background'  => '#0F0E0C',
+				'background2' => '#171613',
+				'card'        => '#1C1B18',
+				'text'        => '#F6F4EE',
+				'mutedText'   => '#A8A49F',
+				'accent'      => '#5C91FF',
+				'highlight'   => '#262420',
+				'button'      => '#F6F4EE',
+			),
+		),
+	);
+
+	$encoded = foa_cleaner_vibetiles_encode_record( $record );
+	return '' !== $encoded ? $try . '#style=' . $encoded : $try;
 }
 
 /**
