@@ -133,16 +133,10 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 			'record'  => array(
 				'architrave'   => 3,
 				'label'        => 'Swiss Ink',
-				'base'         => 'standard',
+				'base'         => 'host',
 				'radius'       => 'small',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
-				'roles'        => array(
-					'title'    => array( 'font' => 'geist' ),
-					'headings' => array( 'font' => 'geist' ),
-					'body'     => array( 'font' => 'dm-sans' ),
-					'meta'     => array( 'font' => 'mono' ),
-				),
 				'colours'      => array(
 					'light' => array(
 						'background'  => '#FFFFFF',
@@ -175,16 +169,10 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 			'record'  => array(
 				'architrave'   => 3,
 				'label'        => 'Warm Paper',
-				'base'         => 'standard',
+				'base'         => 'host',
 				'radius'       => 'small',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
-				'roles'        => array(
-					'title'    => array( 'font' => 'geist' ),
-					'headings' => array( 'font' => 'geist' ),
-					'body'     => array( 'font' => 'dm-sans' ),
-					'meta'     => array( 'font' => 'mono' ),
-				),
 				'colours'      => array(
 					'light' => array(
 						'background'  => '#FAF8F4',
@@ -217,16 +205,10 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 			'record'  => array(
 				'architrave'   => 3,
 				'label'        => 'Midnight Slate',
-				'base'         => 'standard',
+				'base'         => 'host',
 				'radius'       => 'small',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
-				'roles'        => array(
-					'title'    => array( 'font' => 'geist' ),
-					'headings' => array( 'font' => 'geist' ),
-					'body'     => array( 'font' => 'dm-sans' ),
-					'meta'     => array( 'font' => 'mono' ),
-				),
 				'colours'      => array(
 					'light' => array(
 						'background'  => '#0B0D11',
@@ -259,16 +241,10 @@ function foa_cleaner_get_vibetiles_curated_presets( string $base_url = '' ): arr
 			'record'  => array(
 				'architrave'   => 3,
 				'label'        => 'Forest Studio',
-				'base'         => 'standard',
+				'base'         => 'host',
 				'radius'       => 'medium',
 				'borderWidth'  => 'hairline',
 				'buttonColour' => 'accent',
-				'roles'        => array(
-					'title'    => array( 'font' => 'geist' ),
-					'headings' => array( 'font' => 'geist' ),
-					'body'     => array( 'font' => 'dm-sans' ),
-					'meta'     => array( 'font' => 'mono' ),
-				),
 				'colours'      => array(
 					'light' => array(
 						'background'  => '#FBFBF9',
