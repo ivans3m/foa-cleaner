@@ -375,4 +375,65 @@
 				});
 		});
 	}
+
+	/* ------------------------------------------------------------------
+	 * Vibetiles Site Default Soft Rollback
+	 * ------------------------------------------------------------------ */
+	var vtPanel = document.querySelector('[data-foa-vibetiles-panel]');
+	if (vtPanel) {
+		var vtRestoreBtn = vtPanel.querySelector('[data-foa-vibetiles-restore]');
+		var vtBadge = vtPanel.querySelector('[data-foa-vibetiles-badge]');
+		var vtNote = vtPanel.querySelector('[data-foa-vibetiles-note]');
+		var vtMsg = vtPanel.querySelector('[data-foa-vibetiles-message]');
+
+		if (vtRestoreBtn) {
+			vtRestoreBtn.addEventListener('click', function () {
+				if (vtRestoreBtn.disabled || !config.ajaxUrl || !config.vibetilesNonce) {
+					return;
+				}
+				if (!window.confirm(labels.vtRestoreConfirm || 'Restore FoA Cleaner Default for all visitors?')) {
+					return;
+				}
+
+				vtRestoreBtn.disabled = true;
+				vtRestoreBtn.textContent = labels.vtRestoring || 'Restoring…';
+				setCvMsg(vtMsg, '', false);
+
+				var body = new URLSearchParams();
+				body.append('action', 'foa_cleaner_restore_vibetiles_default');
+				body.append('nonce', config.vibetilesNonce);
+
+				fetch(config.ajaxUrl, {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+					body: body.toString()
+				})
+					.then(function (res) { return res.json(); })
+					.then(function (json) {
+						if (json && json.success) {
+							vtRestoreBtn.textContent = labels.vtRestore || 'Restore FoA Cleaner Default';
+							if (vtBadge) {
+								vtBadge.classList.remove('is-installed');
+								vtBadge.classList.add('is-active');
+								vtBadge.textContent = labels.vtDefaultBadge || 'FoA Cleaner Default';
+							}
+							if (vtNote) {
+								vtNote.textContent = labels.vtDefaultNote || 'Visitors currently see FoA Cleaner’s original Clean Design Light default.';
+							}
+							setCvMsg(vtMsg, (json.data && json.data.message) || '', false);
+							return;
+						}
+						vtRestoreBtn.disabled = false;
+						vtRestoreBtn.textContent = labels.vtRestore || 'Restore FoA Cleaner Default';
+						setCvMsg(vtMsg, (json && json.data && json.data.message) || labels.vtRestoreError || 'Could not restore default.', true);
+					})
+					.catch(function () {
+						vtRestoreBtn.disabled = false;
+						vtRestoreBtn.textContent = labels.vtRestore || 'Restore FoA Cleaner Default';
+						setCvMsg(vtMsg, labels.vtRestoreError || 'Could not restore default.', true);
+					});
+			});
+		}
+	}
 })();

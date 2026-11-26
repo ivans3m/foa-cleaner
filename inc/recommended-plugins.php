@@ -291,10 +291,11 @@ function foa_cleaner_enqueue_admin_options_assets( string $hook_suffix ): void {
 		'foa-cleaner-admin-options',
 		'window.foaCleanerAdmin = ' . wp_json_encode(
 			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'foa_cleaner_plugin_action' ),
-				'cvNonce' => wp_create_nonce( 'foa_cleaner_cv_action' ),
-				'labels'  => array(
+				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
+				'nonce'          => wp_create_nonce( 'foa_cleaner_plugin_action' ),
+				'cvNonce'        => wp_create_nonce( 'foa_cleaner_cv_action' ),
+				'vibetilesNonce' => wp_create_nonce( 'foa_cleaner_vibetiles_action' ),
+				'labels'         => array(
 					'installing'      => __( 'Installing…', 'foa-cleaner' ),
 					'activating'      => __( 'Activating…', 'foa-cleaner' ),
 					'activate'        => __( 'Activate', 'foa-cleaner' ),
@@ -315,8 +316,14 @@ function foa_cleaner_enqueue_admin_options_assets( string $hook_suffix ): void {
 					'cvPublishError'  => __( 'Could not publish the CV page.', 'foa-cleaner' ),
 					'cvDeleteConfirm' => __( 'Move this CV page to Trash? You can restore it from Pages → Trash or upload a new CV immediately.', 'foa-cleaner' ),
 					'cvDeleting'      => __( 'Moving to Trash…', 'foa-cleaner' ),
-					'cvDelete'        => __( 'Delete', 'foa-cleaner' ),
-					'cvDeleteError'   => __( 'Could not move the CV page to Trash.', 'foa-cleaner' ),
+					'cvDelete'           => __( 'Delete', 'foa-cleaner' ),
+					'cvDeleteError'      => __( 'Could not move the CV page to Trash.', 'foa-cleaner' ),
+					'vtRestoreConfirm'   => __( 'Restore FoA Cleaner’s original Clean Design Light default for all visitors? Your saved Vibetiles styles will be kept.', 'foa-cleaner' ),
+					'vtRestoring'        => __( 'Restoring…', 'foa-cleaner' ),
+					'vtRestore'          => __( 'Restore FoA Cleaner Default', 'foa-cleaner' ),
+					'vtDefaultBadge'     => __( 'FoA Cleaner Default', 'foa-cleaner' ),
+					'vtDefaultNote'      => __( 'Visitors currently see FoA Cleaner’s original Clean Design Light default.', 'foa-cleaner' ),
+					'vtRestoreError'     => __( 'Could not restore FoA Cleaner Default.', 'foa-cleaner' ),
 				),
 			)
 		) . ';',

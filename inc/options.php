@@ -662,6 +662,7 @@ function foa_cleaner_render_options_page(): void {
 	<div class="wrap">
 		<h1><?php esc_html_e( 'FoA Cleaner Settings', 'foa-cleaner' ); ?></h1>
 		<?php foa_cleaner_render_recommended_plugins_panel(); ?>
+		<?php foa_cleaner_render_vibetiles_panel(); ?>
 		<form action="options.php" method="post">
 			<?php
 			settings_fields( 'foa_cleaner_settings_group' );
