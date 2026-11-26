@@ -632,11 +632,18 @@ function foa_cleaner_render_jetpack_markdown_field(): void {
 		esc_html__( 'Enable Jetpack Markdown block & Markdown writing support (for CV pages)', 'foa-cleaner' )
 	);
 
+	$ref_url  = function_exists( 'foa_cleaner_get_cv_format_reference_url' ) ? foa_cleaner_get_cv_format_reference_url() : 'https://github.com/ivans3m/cv-formatter';
+	$ref_link = sprintf(
+		' <a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+		esc_url( $ref_url ),
+		esc_html__( 'Canonical cv-md/1.1 format on GitHub →', 'foa-cleaner' )
+	);
+
 	if ( ! $jetpack_active ) {
 		foa_cleaner_render_jetpack_inline_action();
-		echo '<p class="description">' . esc_html__( 'Install and activate Jetpack to mirror Markdown support for CV and documentation pages.', 'foa-cleaner' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Install and activate Jetpack to mirror Markdown support for CV and documentation pages.', 'foa-cleaner' ) . $ref_link . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above.
 	} else {
-		echo '<p class="description">' . esc_html__( 'Mirrored with Jetpack Settings → Writing (Markdown module). Enables the Jetpack Markdown block for pasting structured CV Markdown directly in the Block Editor.', 'foa-cleaner' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Mirrored with Jetpack Settings → Writing (Markdown module). Enables the Jetpack Markdown block for pasting structured CV Markdown directly in the Block Editor.', 'foa-cleaner' ) . $ref_link . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above.
 	}
 
 	foa_cleaner_render_cv_builder_panel();

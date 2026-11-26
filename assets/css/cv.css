@@ -31,6 +31,38 @@
 	margin-left: auto;
 }
 
+.foa-cv-header__top > .wp-block-group.foa-cv-header__actions {
+	flex: 0 0 auto;
+	margin-left: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.foa-cv-header .foa-cv-header__md-link {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	line-height: 1.3;
+	letter-spacing: 0.02em;
+	color: var(--foa-text-muted);
+	text-align: center;
+}
+
+.foa-cv-header .foa-cv-header__md-link a {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: var(--foa-border-strong);
+	text-underline-offset: 0.2em;
+	transition: color var(--foa-transition), text-decoration-color var(--foa-transition);
+}
+
+.foa-cv-header .foa-cv-header__md-link a:hover {
+	color: var(--foa-accent);
+	text-decoration-color: var(--foa-accent);
+}
+
 .foa-cv-header__name {
 	margin: 0;
 	letter-spacing: -0.03em;

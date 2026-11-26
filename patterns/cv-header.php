@@ -30,13 +30,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:buttons {"className":"foa-cv-no-print"} -->
-		<div class="wp-block-buttons foa-cv-no-print">
-			<!-- wp:button {"className":"is-style-ghost"} -->
-			<div class="wp-block-button is-style-ghost"><a class="wp-block-button__link wp-element-button" href="#"><?php esc_html_e( 'Download PDF', 'foa-cleaner' ); ?></a></div>
-			<!-- /wp:button -->
+		<!-- wp:group {"className":"foa-cv-header__actions foa-cv-no-print","layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
+		<div class="wp-block-group foa-cv-header__actions foa-cv-no-print">
+			<!-- wp:buttons -->
+			<div class="wp-block-buttons">
+				<!-- wp:button {"className":"is-style-ghost"} -->
+				<div class="wp-block-button is-style-ghost"><a class="wp-block-button__link wp-element-button" href="#"><?php esc_html_e( 'Download PDF', 'foa-cleaner' ); ?></a></div>
+				<!-- /wp:button -->
+			</div>
+			<!-- /wp:buttons -->
+
+			<!-- wp:paragraph {"align":"center","className":"foa-cv-header__md-link"} -->
+			<p class="has-text-align-center foa-cv-header__md-link"><a href="#"><?php esc_html_e( 'Download CV.md', 'foa-cleaner' ); ?></a></p>
+			<!-- /wp:paragraph -->
 		</div>
-		<!-- /wp:buttons -->
+		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
 

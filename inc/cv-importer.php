@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'FOA_CLEANER_CV_PAGE_ID_OPTION', 'foa_cleaner_cv_page_id' );
-define( 'FOA_CLEANER_CV_FORMAT_REF_URL', 'https://github.com/ivans3m/foa-cleaner' );
+define( 'FOA_CLEANER_CV_FORMAT_REF_URL', 'https://github.com/ivans3m/cv-formatter' );
 define( 'FOA_CLEANER_CV_MAX_MD_BYTES', 524288 );     // 512 KB.
 define( 'FOA_CLEANER_CV_MAX_PDF_BYTES', 10485760 );  // 10 MB.
 
@@ -526,7 +526,10 @@ function foa_cleaner_build_public_cv_markdown( array $parsed ): string {
 /**
  * Store a validated, sanitized public `.md` CV file in the WordPress uploads directory.
  *
- * Only called after `foa_cleaner_parse_cv_markdown()` succeeds and no PDF was uploaded.
+ * Called after `foa_cleaner_parse_cv_markdown()` succeeds so visitors and AI agents
+ * can always download the sanitized Markdown CV (either via the subtle `Download CV.md`
+ * link beneath `Download PDF`, or as the primary `Download CV.MD` button when no PDF
+ * is uploaded).
  *
  * @since 1.1.0
  *
@@ -545,13 +548,52 @@ function foa_cleaner_store_cv_markdown_file( array $parsed, string $filename ) {
 	}
 
 	$public_md = foa_cleaner_build_public_cv_markdown( $parsed );
-	$uploaded  = wp_upload_bits( $safe_base . '.md', null, $public_md );
 
-	if ( ! empty( $uploaded['error'] ) || empty( $uploaded['url'] ) ) {
+	// WordPress core's default upload_mimes does not include `.md`, which causes
+	// wp_upload_bits() to reject it with "Sorry, you are not allowed to upload this file type."
+	// Allow `text/markdown` strictly for this sanitized write, then remove immediately.
+	$allow_md_mime = static function ( array $mimes ): array {
+		$mimes['md'] = 'text/markdown';
+		return $mimes;
+	};
+
+	add_filter( 'upload_mimes', $allow_md_mime, 99 );
+	try {
+		$uploaded = wp_upload_bits( $safe_base . '.md', null, $public_md );
+	} finally {
+		remove_filter( 'upload_mimes', $allow_md_mime, 99 );
+	}
+
+	if ( ! empty( $uploaded['error'] ) || empty( $uploaded['file'] ) || empty( $uploaded['url'] ) ) {
 		$msg = ! empty( $uploaded['error'] )
 			? (string) $uploaded['error']
 			: __( 'Could not save the Markdown file to the uploads directory.', 'foa-cleaner' );
 		return new WP_Error( 'foa_cv_md_store', $msg );
+	}
+
+	$attachment_id = wp_insert_attachment(
+		array(
+			'guid'           => (string) $uploaded['url'],
+			'post_mime_type' => 'text/markdown',
+			'post_title'     => sanitize_file_name( pathinfo( (string) $uploaded['file'], PATHINFO_FILENAME ) ),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+		),
+		(string) $uploaded['file']
+	);
+
+	if ( is_wp_error( $attachment_id ) ) {
+		wp_delete_file( (string) $uploaded['file'] );
+		return $attachment_id;
+	}
+
+	if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+	}
+
+	$attach_meta = wp_generate_attachment_metadata( $attachment_id, (string) $uploaded['file'] );
+	if ( is_array( $attach_meta ) ) {
+		wp_update_attachment_metadata( $attachment_id, $attach_meta );
 	}
 
 	return (string) $uploaded['url'];
@@ -561,16 +603,18 @@ function foa_cleaner_store_cv_markdown_file( array $parsed, string $filename ) {
  * Build Gutenberg block markup for a CV page from parsed `cv-md/1.1` data.
  *
  * Generates a native `foa-cv-header` group (Name, Headline, Contact/Links meta,
- * and Download PDF or Download CV.MD button) followed by a `jetpack/markdown` block.
+ * and Download PDF + subtle Download CV.md link, or Download CV.MD button alone)
+ * followed by a `jetpack/markdown` block.
  *
  * @since 1.1.0
  *
- * @param array{meta: array<string, mixed>, body: string} $parsed         Parsed CV data.
- * @param string                                          $download_url   Optional PDF or `.md` download URL.
- * @param string                                          $download_label Optional button label (defaults to "Download PDF").
+ * @param array{meta: array<string, mixed>, body: string} $parsed           Parsed CV data.
+ * @param string                                          $download_url     Optional primary PDF or `.md` download URL.
+ * @param string                                          $download_label   Optional button label (defaults to "Download PDF").
+ * @param string                                          $secondary_md_url Optional secondary `.md` URL rendered in tiny letters beneath "Download PDF".
  * @return string Serialized Gutenberg block content.
  */
-function foa_cleaner_build_cv_page_blocks( array $parsed, string $download_url = '', string $download_label = '' ): string {
+function foa_cleaner_build_cv_page_blocks( array $parsed, string $download_url = '', string $download_label = '', string $secondary_md_url = '' ): string {
 	$meta = $parsed['meta'];
 	$body = $parsed['body'];
 
@@ -617,15 +661,34 @@ function foa_cleaner_build_cv_page_blocks( array $parsed, string $download_url =
 	$blocks[] = '<!-- /wp:group -->';
 
 	if ( '' !== $download_url ) {
-		$safe_url   = esc_url( $download_url );
-		$btn_label  = '' !== $download_label ? $download_label : __( 'Download PDF', 'foa-cleaner' );
-		$blocks[]   = '<!-- wp:buttons {"className":"foa-cv-no-print"} -->';
-		$blocks[]   = '<div class="wp-block-buttons foa-cv-no-print">';
-		$blocks[]   = '<!-- wp:button {"className":"is-style-ghost"} -->';
-		$blocks[]   = '<div class="wp-block-button is-style-ghost"><a class="wp-block-button__link wp-element-button" href="' . $safe_url . '">' . esc_html( $btn_label ) . '</a></div>';
-		$blocks[]   = '<!-- /wp:button -->';
-		$blocks[]   = '</div>';
-		$blocks[]   = '<!-- /wp:buttons -->';
+		$safe_url  = esc_url( $download_url );
+		$btn_label = '' !== $download_label ? $download_label : __( 'Download PDF', 'foa-cleaner' );
+
+		if ( '' !== $secondary_md_url ) {
+			$safe_md_url = esc_url( $secondary_md_url );
+			$blocks[]    = '<!-- wp:group {"className":"foa-cv-header__actions foa-cv-no-print","layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->';
+			$blocks[]    = '<div class="wp-block-group foa-cv-header__actions foa-cv-no-print">';
+			$blocks[]    = '<!-- wp:buttons -->';
+			$blocks[]    = '<div class="wp-block-buttons">';
+			$blocks[]    = '<!-- wp:button {"className":"is-style-ghost"} -->';
+			$blocks[]    = '<div class="wp-block-button is-style-ghost"><a class="wp-block-button__link wp-element-button" href="' . $safe_url . '">' . esc_html( $btn_label ) . '</a></div>';
+			$blocks[]    = '<!-- /wp:button -->';
+			$blocks[]    = '</div>';
+			$blocks[]    = '<!-- /wp:buttons -->';
+			$blocks[]    = '<!-- wp:paragraph {"align":"center","className":"foa-cv-header__md-link"} -->';
+			$blocks[]    = '<p class="has-text-align-center foa-cv-header__md-link"><a href="' . $safe_md_url . '">' . esc_html__( 'Download CV.md', 'foa-cleaner' ) . '</a></p>';
+			$blocks[]    = '<!-- /wp:paragraph -->';
+			$blocks[]    = '</div>';
+			$blocks[]    = '<!-- /wp:group -->';
+		} else {
+			$blocks[] = '<!-- wp:buttons {"className":"foa-cv-no-print"} -->';
+			$blocks[] = '<div class="wp-block-buttons foa-cv-no-print">';
+			$blocks[] = '<!-- wp:button {"className":"is-style-ghost"} -->';
+			$blocks[] = '<div class="wp-block-button is-style-ghost"><a class="wp-block-button__link wp-element-button" href="' . $safe_url . '">' . esc_html( $btn_label ) . '</a></div>';
+			$blocks[] = '<!-- /wp:button -->';
+			$blocks[] = '</div>';
+			$blocks[] = '<!-- /wp:buttons -->';
+		}
 	}
 
 	$blocks[] = '</div>';
@@ -865,7 +928,7 @@ function foa_cleaner_render_cv_upload_modal(): void {
 				<div class="foa-modal__field">
 					<label for="foa-cv-pdf-file"><?php esc_html_e( 'Companion PDF File (optional)', 'foa-cleaner' ); ?></label>
 					<input type="file" id="foa-cv-pdf-file" name="cv_pdf" accept=".pdf,application/pdf" />
-					<p class="description"><?php esc_html_e( 'Uploaded to the Media Library and linked to the "Download PDF" button in the CV Header. If left blank, the button becomes "Download CV.MD" linking to your uploaded Markdown file.', 'foa-cleaner' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Uploaded to the Media Library and linked to the "Download PDF" button in the CV Header, with a subtle "Download CV.md" link right beneath it. If left blank, the button becomes "Download CV.MD" linking to your uploaded Markdown file.', 'foa-cleaner' ); ?></p>
 				</div>
 
 				<div class="foa-modal__field">
@@ -966,25 +1029,27 @@ function foa_cleaner_ajax_create_cv_page(): void {
 	$raw_slug  = isset( $_POST['cv_slug'] ) ? sanitize_title( wp_unslash( (string) $_POST['cv_slug'] ) ) : 'cv';
 	$page_slug = '' !== $raw_slug ? $raw_slug : 'cv';
 
-	// Optional PDF upload; if omitted, store the validated, sanitized .md file and use "Download CV.MD".
-	$download_url   = '';
-	$download_label = '';
+	// Always store a validated, sanitized public .md copy (with ## Facts stripped).
+	$md_base   = pathinfo( $md_name, PATHINFO_FILENAME );
+	$md_result = foa_cleaner_store_cv_markdown_file( $parsed, '' !== $md_base ? $md_base : $page_slug );
+	if ( is_wp_error( $md_result ) ) {
+		wp_send_json_error( array( 'message' => $md_result->get_error_message() ), 400 );
+	}
+
+	// Optional PDF upload: primary "Download PDF" button + tiny "Download CV.md" link beneath it.
+	// When omitted, the primary button itself is "Download CV.MD" with no second link.
+	$download_url     = $md_result;
+	$download_label   = __( 'Download CV.MD', 'foa-cleaner' );
+	$secondary_md_url = '';
 	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- validated in helper.
 	if ( isset( $_FILES['cv_pdf'] ) && is_array( $_FILES['cv_pdf'] ) && ! empty( $_FILES['cv_pdf']['name'] ) ) {
 		$pdf_result = foa_cleaner_handle_cv_pdf_upload( $_FILES['cv_pdf'] );
 		if ( is_wp_error( $pdf_result ) ) {
 			wp_send_json_error( array( 'message' => $pdf_result->get_error_message() ), 400 );
 		}
-		$download_url   = $pdf_result;
-		$download_label = __( 'Download PDF', 'foa-cleaner' );
-	} else {
-		$md_base   = pathinfo( $md_name, PATHINFO_FILENAME );
-		$md_result = foa_cleaner_store_cv_markdown_file( $parsed, '' !== $md_base ? $md_base : $page_slug );
-		if ( is_wp_error( $md_result ) ) {
-			wp_send_json_error( array( 'message' => $md_result->get_error_message() ), 400 );
-		}
-		$download_url   = $md_result;
-		$download_label = __( 'Download CV.MD', 'foa-cleaner' );
+		$download_url     = $pdf_result;
+		$download_label   = __( 'Download PDF', 'foa-cleaner' );
+		$secondary_md_url = $md_result;
 	}
 
 	$page_title = ! empty( $parsed['meta']['name'] )
@@ -995,7 +1060,7 @@ function foa_cleaner_ajax_create_cv_page(): void {
 		)
 		: __( 'CV', 'foa-cleaner' );
 
-	$content = foa_cleaner_build_cv_page_blocks( $parsed, $download_url, $download_label );
+	$content = foa_cleaner_build_cv_page_blocks( $parsed, $download_url, $download_label, $secondary_md_url );
 
 	$page_id = wp_insert_post(
 		array(
