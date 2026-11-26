@@ -39,6 +39,7 @@ $foa_cleaner_includes = array(
 	'inc/block-styles.php',
 	'inc/pattern-categories.php',
 	'inc/reading-features.php',
+	'inc/toc.php',
 	'inc/cv.php',
 	'inc/cv-importer.php',
 );

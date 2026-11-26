@@ -27,6 +27,7 @@ function foa_cleaner_option_defaults(): array {
 	return array(
 		'default_color_mode'       => 'light',
 		'enable_motion'            => true,
+		'toc_mode'                 => 'long',
 		'enable_jetpack_portfolio' => false,
 		'enable_jetpack_markdown'  => false,
 	);
@@ -158,6 +159,30 @@ function foa_cleaner_is_motion_enabled(): bool {
 }
 
 /**
+ * Get the configured Auto-Generated TOC mode ('off', 'long', or 'always').
+ *
+ * @since 1.1.0
+ *
+ * @return string Validated TOC mode.
+ */
+function foa_cleaner_get_toc_mode(): string {
+	$options = foa_cleaner_get_options();
+	$allowed = array( 'off', 'long', 'always' );
+	$mode    = in_array( $options['toc_mode'], $allowed, true ) ? $options['toc_mode'] : 'long';
+
+	/**
+	 * Filter the Auto-Generated Table of Contents mode on single posts.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $mode One of 'off', 'long', or 'always'.
+	 */
+	$filtered = (string) apply_filters( 'foa_cleaner_toc_mode', $mode );
+
+	return in_array( $filtered, $allowed, true ) ? $filtered : $mode;
+}
+
+/**
  * Check whether optional Jetpack Portfolio theme support is enabled.
  *
  * Jetpack v14.4+ hides Custom Content Types in block themes unless the theme
@@ -239,9 +264,13 @@ function foa_cleaner_sanitize_options( $input ): array {
 	$allowed_modes = array( 'system', 'light', 'dark' );
 	$mode          = isset( $input['default_color_mode'] ) ? sanitize_key( (string) $input['default_color_mode'] ) : $defaults['default_color_mode'];
 
+	$allowed_toc = array( 'off', 'long', 'always' );
+	$toc_mode    = isset( $input['toc_mode'] ) ? sanitize_key( (string) $input['toc_mode'] ) : $defaults['toc_mode'];
+
 	return array(
 		'default_color_mode'       => in_array( $mode, $allowed_modes, true ) ? $mode : $defaults['default_color_mode'],
 		'enable_motion'            => ! empty( $input['enable_motion'] ),
+		'toc_mode'                 => in_array( $toc_mode, $allowed_toc, true ) ? $toc_mode : $defaults['toc_mode'],
 		'enable_jetpack_portfolio' => $jetpack_active ? ! empty( $input['enable_jetpack_portfolio'] ) : ! empty( $existing['enable_jetpack_portfolio'] ),
 		'enable_jetpack_markdown'  => $jetpack_active ? ! empty( $input['enable_jetpack_markdown'] ) : ! empty( $existing['enable_jetpack_markdown'] ),
 	);
@@ -412,6 +441,15 @@ function foa_cleaner_register_settings(): void {
 		array( 'label_for' => 'foa-cleaner-enable-motion' )
 	);
 
+	add_settings_field(
+		'foa_cleaner_toc_mode',
+		__( 'Table of Contents', 'foa-cleaner' ),
+		'foa_cleaner_render_toc_mode_field',
+		'foa-cleaner-options',
+		'foa_cleaner_general_section',
+		array( 'label_for' => 'foa-cleaner-toc-mode' )
+	);
+
 	add_settings_section(
 		'foa_cleaner_integrations_section',
 		__( 'Optional Integrations', 'foa-cleaner' ),
@@ -511,6 +549,32 @@ function foa_cleaner_render_motion_field(): void {
 		esc_html__( 'Enable subtle scroll-reveal and interaction micro-animations', 'foa-cleaner' )
 	);
 	echo '<p class="description">' . esc_html__( 'Always disabled automatically for visitors who prefer reduced motion in their OS settings.', 'foa-cleaner' ) . '</p>';
+}
+
+/**
+ * Render the Auto-Generated Table of Contents mode select control.
+ *
+ * @since 1.1.0
+ */
+function foa_cleaner_render_toc_mode_field(): void {
+	$current = foa_cleaner_get_toc_mode();
+	$choices = array(
+		'long'   => __( 'Long posts only (4+ headings or 2,500+ characters)', 'foa-cleaner' ),
+		'always' => __( 'Always on (any post with 2+ headings)', 'foa-cleaner' ),
+		'off'    => __( 'Off', 'foa-cleaner' ),
+	);
+
+	echo '<select id="foa-cleaner-toc-mode" name="' . esc_attr( FOA_CLEANER_OPTION_KEY ) . '[toc_mode]">';
+	foreach ( $choices as $value => $label ) {
+		printf(
+			'<option value="%1$s"%2$s>%3$s</option>',
+			esc_attr( $value ),
+			selected( $current, $value, false ),
+			esc_html( $label )
+		);
+	}
+	echo '</select>';
+	echo '<p class="description">' . esc_html__( 'Automatically generates an H2/H3 Table of Contents on single blog posts: sticky margin rail on wide desktops (1280px+) and collapsible card on smaller screens.', 'foa-cleaner' ) . '</p>';
 }
 
 /**

@@ -1,0 +1,223 @@
+/*
+ * FoA Cleaner — Auto-Generated Table of Contents
+ * Mobile & tablet (< 1280px): collapsible Clean Design card at top of article.
+ * Wide desktop (>= 1280px): minimal sticky margin rail with active-section highlight.
+ */
+
+/* Ensure jumped headings clear the sticky header cleanly */
+.foa-article-content :is(h2, h3)[id] {
+	scroll-margin-top: 6rem;
+}
+
+/* --------------------------------------------------------------------------
+ * 1. Base / Collapsible Card (< 1280px)
+ * -------------------------------------------------------------------------- */
+
+.foa-toc {
+	margin-top: 0;
+	margin-bottom: var(--wp--preset--spacing--xl);
+}
+
+.foa-toc__details {
+	border: 1px solid var(--foa-border);
+	border-radius: var(--foa-radius-card);
+	background-color: var(--foa-surface);
+	padding: 0;
+}
+
+.foa-toc__summary {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	padding: 0.875rem 1.125rem;
+	list-style: none;
+	cursor: pointer;
+	user-select: none;
+}
+
+.foa-toc__summary::-webkit-details-marker {
+	display: none;
+}
+
+.foa-toc__title {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--foa-text);
+}
+
+.foa-toc__count {
+	margin-left: auto;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	color: var(--foa-text-muted);
+}
+
+.foa-toc__chevron {
+	width: 0.45rem;
+	height: 0.45rem;
+	border-right: 1.5px solid var(--foa-text-muted);
+	border-bottom: 1.5px solid var(--foa-text-muted);
+	transform: rotate(45deg);
+	transition: transform var(--foa-transition);
+	margin-top: -0.15rem;
+	flex-shrink: 0;
+}
+
+.foa-toc__details[open] .foa-toc__chevron {
+	transform: rotate(-135deg);
+	margin-top: 0.2rem;
+}
+
+.foa-toc__list {
+	list-style: none;
+	margin: 0;
+	padding: 0 1.125rem 1rem;
+	border-top: 1px solid var(--foa-border);
+	padding-top: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.foa-toc__item {
+	margin: 0;
+}
+
+.foa-toc__item.is-level-3 {
+	padding-left: 0.875rem;
+}
+
+.foa-toc__link {
+	display: block;
+	padding: 0.25rem 0;
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.45;
+	color: var(--foa-text-secondary);
+	text-decoration: none;
+	transition: color var(--foa-transition);
+}
+
+.foa-toc__link:hover,
+.foa-toc__link.is-active {
+	color: var(--foa-accent);
+}
+
+.foa-toc__link.is-active {
+	font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Wide Desktop Margin Rail (>= 1280px)
+ * -------------------------------------------------------------------------- */
+
+@media (min-width: 1280px) {
+	.foa-toc {
+		position: fixed;
+		top: 7.5rem;
+		left: calc(50% + 22.5rem + 2.5rem);
+		width: clamp(12rem, calc(50vw - 22.5rem - 4rem), 15rem);
+		max-height: calc(100vh - 10rem);
+		overflow-y: auto;
+		margin: 0;
+		z-index: 15;
+		transition: opacity 0.22s ease, transform 0.22s ease;
+	}
+
+	body.admin-bar .foa-toc {
+		top: 9.5rem;
+	}
+
+	.foa-toc__details {
+		border: none;
+		border-radius: 0;
+		background-color: transparent;
+	}
+
+	.foa-toc__summary {
+		padding: 0 0 0.625rem 0.875rem;
+		pointer-events: none;
+		cursor: default;
+	}
+
+	.foa-toc__title {
+		color: var(--foa-text-muted);
+	}
+
+	.foa-toc__count,
+	.foa-toc__chevron {
+		display: none;
+	}
+
+	.foa-toc__list {
+		border-top: none;
+		border-left: 1px solid var(--foa-border);
+		padding: 0;
+		gap: 0.125rem;
+	}
+
+	.foa-toc__item.is-level-3 {
+		padding-left: 0;
+	}
+
+	.foa-toc__link {
+		position: relative;
+		padding: 0.25rem 0 0.25rem 0.875rem;
+		font-size: 0.8125rem;
+		line-height: 1.4;
+		color: var(--foa-text-muted);
+	}
+
+	.foa-toc__item.is-level-3 .foa-toc__link {
+		padding-left: 1.5rem;
+		font-size: 0.78125rem;
+	}
+
+	.foa-toc__link::before {
+		content: "";
+		position: absolute;
+		left: -1px;
+		top: 0.2rem;
+		bottom: 0.2rem;
+		width: 2px;
+		background-color: transparent;
+		transition: background-color var(--foa-transition);
+	}
+
+	.foa-toc__link:hover {
+		color: var(--foa-text);
+	}
+
+	.foa-toc__link.is-active {
+		color: var(--foa-text);
+		font-weight: 500;
+	}
+
+	.foa-toc__link.is-active::before {
+		background-color: var(--foa-accent);
+	}
+}
+
+/* Hide TOC cleanly in Focus Mode & Print */
+body.foa-focus-mode .foa-toc {
+	opacity: 0;
+	pointer-events: none;
+}
+
+@media print {
+	.foa-toc {
+		display: none !important;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.foa-toc,
+	.foa-toc__chevron,
+	.foa-toc__link,
+	.foa-toc__link::before {
+		transition: none;
+	}
+}
