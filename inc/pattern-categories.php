@@ -31,7 +31,7 @@ function foa_cleaner_register_pattern_categories(): void {
 		),
 		'foa-cleaner-portfolio'    => array(
 			'label'       => __( 'FoA Cleaner: Portfolio', 'foa-cleaner' ),
-			'description' => __( 'Minimal project grids and case-study showcases.', 'foa-cleaner' ),
+			'description' => __( 'Minimal project grids, galleries, photo essays, video reels, and case-study showcases.', 'foa-cleaner' ),
 		),
 		'foa-cleaner-social-proof' => array(
 			'label'       => __( 'FoA Cleaner: Social Proof', 'foa-cleaner' ),

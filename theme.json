@@ -39,7 +39,24 @@
 			"name": "page-case-study",
 			"title": "Case Study",
 			"postTypes": [
-				"page"
+				"page",
+				"jetpack-portfolio"
+			]
+		},
+		{
+			"name": "page-photo-series",
+			"title": "Portfolio: Image Series",
+			"postTypes": [
+				"page",
+				"jetpack-portfolio"
+			]
+		},
+		{
+			"name": "page-video-project",
+			"title": "Portfolio: Video / Motion",
+			"postTypes": [
+				"page",
+				"jetpack-portfolio"
 			]
 		},
 		{
